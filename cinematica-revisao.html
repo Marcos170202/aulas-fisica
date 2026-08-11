@@ -210,7 +210,7 @@ canvas.camada{position:absolute;inset:0;pointer-events:none}
 <body>
 <div class="deck">
   <div class="topo">
-    <div class="marca"><a href="index.html" class="voltar">← Aulas</a> Física · Cinemática</div>
+    <div class="marca"><a href="../index.html" class="voltar">← Aulas</a> Física · Cinemática</div>
     <div><span id="contador">01</span> / <span id="total">17</span> &nbsp;·&nbsp; ← → para navegar</div>
   </div>
 
@@ -220,11 +220,11 @@ canvas.camada{position:absolute;inset:0;pointer-events:none}
     <section class="slide on capa">
       <div class="eyebrow">Aula 3 · revisão + resolução</div>
       <h1>Cinemática<br>do zero ao<br>gráfico.</h1>
-      <p class="sub">Um mapa mental para reorganizar tudo o que já vimos e, na sequência, doze questões
+      <p class="sub">Um mapa mental para reorganizar tudo o que já vimos e, na sequência, quatorze questões
       no estilo ENEM — com resolução passo a passo na tela.</p>
       <div class="faixa">
         <span class="tag forte">Mapa mental</span>
-        <span class="tag">12 exercícios</span>
+        <span class="tag">14 exercícios</span>
         <span class="tag">Resolução comentada</span>
         <span class="tag">g = 10 m/s²</span>
       </div>
@@ -431,114 +431,162 @@ const G_VXT = `<svg viewBox="0 0 320 200" role="img" aria-label="Gráfico veloci
   </g>
 </svg>`;
 
+const G_VNEG = `<svg viewBox="0 0 320 200" role="img" aria-label="Gráfico velocidade por tempo com trecho negativo">
+  <g stroke="#CBD8D6" stroke-width="1">
+    <line x1="40" y1="47" x2="300" y2="47"/><line x1="40" y1="152" x2="300" y2="152"/>
+    <line x1="127" y1="20" x2="127" y2="182"/><line x1="170" y1="20" x2="170" y2="182"/>
+    <line x1="214" y1="20" x2="214" y2="182"/>
+  </g>
+  <g stroke="#12232E" stroke-width="2" fill="none">
+    <line x1="40" y1="20" x2="40" y2="182"/><line x1="40" y1="100" x2="308" y2="100"/>
+  </g>
+  <polyline points="40,47 127,47 214,152 300,152" fill="none" stroke="#007EA7" stroke-width="3"/>
+  <g font-family="IBM Plex Mono" font-size="10" fill="#12232E">
+    <text x="18" y="51">15</text><text x="14" y="156">-15</text>
+    <text x="123" y="114">4</text><text x="166" y="114">6</text><text x="210" y="114">8</text><text x="292" y="114">12</text>
+    <text x="8" y="26" font-size="12">v (m/s)</text><text x="284" y="196" font-size="12">t (s)</text>
+  </g>
+</svg>`;
+
 const EX = [
-{n:1,nivel:"base",tema:"Deslocamento × distância",
- texto:"Um ciclista parte do ponto A e pedala 300 m para o leste em uma ciclovia retilínea. Percebendo que esqueceu a garrafa de água, volta 120 m para o oeste e para. Nesse percurso, a distância percorrida e o módulo do deslocamento valem, respectivamente:",
- alts:["180 m e 420 m","420 m e 180 m","420 m e 420 m","180 m e 180 m","300 m e 120 m"],certa:1,
- passos:["Distância percorrida soma todos os trechos, sem olhar sentido: <span class='f'>300 + 120 = 420 m</span>.",
-   "Deslocamento é só posição final menos inicial. Adotando o leste como positivo: <span class='f'>ΔS = +300 − 120 = +180 m</span>.",
-   "Repare que os dois números só seriam iguais se o movimento não mudasse de sentido."],
- resp:"420 m percorridos · deslocamento de 180 m para leste"},
+{n:1,nivel:"base",tema:"Distância × deslocamento",
+ texto:"Uma atleta treina em uma pista circular de 50 m de raio. Ao completar uma volta e meia, ela para para hidratar-se. Adotando π ≈ 3, a distância percorrida e o módulo do deslocamento da atleta desde a largada valem, respectivamente:",
+ alts:["300 m e 100 m","450 m e 0","450 m e 100 m","150 m e 100 m","450 m e 300 m"],certa:2,
+ passos:["Distância percorrida é o comprimento do caminho: uma volta vale <span class='f'>2πR = 2·3·50 = 300 m</span>, então uma volta e meia dá <span class='f'>450 m</span>.",
+   "Deslocamento liga o ponto de partida ao de chegada. Meia volta a mais deixa a atleta no ponto diametralmente oposto ao de largada.",
+   "Essa distância em linha reta é o diâmetro: <span class='f'>2R = 100 m</span>.",
+   "A alternativa com deslocamento zero seria a resposta se ela tivesse completado voltas inteiras — repare como o meio faz toda a diferença."],
+ resp:"450 m percorridos, deslocamento de 100 m"},
 
-{n:2,nivel:"base",tema:"Velocidade média",
- texto:"Um carro percorre a primeira metade de uma estrada retilínea com velocidade constante de 30 km/h e a segunda metade a 60 km/h. A velocidade média do carro em todo o percurso é de:",
- alts:["45 km/h","40 km/h","50 km/h","36 km/h","90 km/h"],certa:1,
- passos:["Chame de <span class='f'>d</span> cada metade. O percurso total é <span class='f'>2d</span>.",
-   "Tempos: <span class='f'>t₁ = d/30</span> e <span class='f'>t₂ = d/60</span>, logo <span class='f'>t = 2d/60 + d/60 = 3d/60 = d/20</span>.",
-   "<span class='f'>v<sub>m</sub> = 2d ÷ (d/20) = 40 km/h</span>.",
-   "A média aritmética daria 45 km/h — o erro clássico. O carro passa <i>mais tempo</i> no trecho lento, então a média puxa para baixo."],
- resp:"40 km/h (e não 45 km/h)"},
+{n:2,nivel:"base",tema:"Velocidade média com parada",
+ texto:"Um caminhoneiro percorre 180 km em 2,0 h, para 30 min em um posto para descansar e depois percorre mais 120 km em 1,5 h. A velocidade escalar média em toda a viagem, considerando o percurso completo desde a saída até a chegada, é de:",
+ alts:["80 km/h","75 km/h","85 km/h","60 km/h","150 km/h"],certa:1,
+ passos:["Velocidade média não é média das velocidades: é a distância total dividida pelo tempo total.",
+   "Distância: <span class='f'>180 + 120 = 300 km</span>.",
+   "Tempo: <span class='f'>2,0 + 0,5 + 1,5 = 4,0 h</span>. A parada conta, porque o relógio da viagem não parou.",
+   "<span class='f'>v<sub>m</sub> = 300/4,0 = 75 km/h</span>.",
+   "Quem esquece os 30 minutos encontra 80 km/h — é a alternativa armadilha da questão."],
+ resp:"75 km/h"},
 
-{n:3,nivel:"base",tema:"MRU · encontro",
- texto:"Dois trens trafegam em trilhos paralelos, aproximando-se um do outro. No instante t = 0, o trem A está na posição 0 e se move a 20 m/s no sentido positivo; o trem B está na posição 300 m e se move a 10 m/s no sentido negativo. O instante e a posição do encontro são:",
- alts:["15 s e 300 m","20 s e 400 m","10 s e 200 m","10 s e 100 m","30 s e 600 m"],certa:2,
- passos:["Escreva as duas funções horárias: <span class='f'>S<sub>A</sub> = 20t</span> e <span class='f'>S<sub>B</sub> = 300 − 10t</span>.",
-   "Encontro significa mesma posição: <span class='f'>20t = 300 − 10t</span> → <span class='f'>30t = 300</span> → <span class='f'>t = 10 s</span>.",
-   "Substitua em qualquer uma das funções: <span class='f'>S = 20·10 = 200 m</span>.",
-   "Confira na outra: <span class='f'>300 − 10·10 = 200 m</span>. Bate."],
- resp:"t = 10 s, na posição 200 m"},
+{n:3,nivel:"base",tema:"MRU · corpo extenso",
+ texto:"Um trem de 200 m de comprimento viaja a 72 km/h e atravessa um túnel retilíneo de 600 m. O tempo decorrido desde o instante em que a frente do trem entra no túnel até o instante em que a traseira sai completamente dele é de:",
+ alts:["20 s","30 s","45 s","40 s","10 s"],certa:3,
+ passos:["Converta a velocidade: <span class='f'>72 ÷ 3,6 = 20 m/s</span>.",
+   "O truque está no que o trem precisa percorrer. Para a traseira sair, um ponto do trem tem de avançar o túnel inteiro <b>mais</b> o próprio comprimento do trem.",
+   "<span class='f'>d = 600 + 200 = 800 m</span>.",
+   "<span class='f'>t = 800/20 = 40 s</span>.",
+   "Só o túnel (600 m) daria 30 s — resposta de quem tratou o trem como um ponto."],
+ resp:"40 s"},
 
-{n:4,nivel:"medio",tema:"Leitura de gráfico S × t",fig:G_SXT,
- texto:"O gráfico mostra a posição de um móvel ao longo de 10 s. A velocidade média e a velocidade escalar média do móvel entre 0 e 10 s valem, respectivamente:",
- alts:["0 e 8 m/s","8 m/s e 0","4 m/s e 8 m/s","0 e 0","10 m/s e 10 m/s"],certa:0,
- passos:["Leia os trechos pela inclinação: de 0 a 4 s a posição vai de 0 a 40 m, então <span class='f'>v = +10 m/s</span>; de 4 a 6 s a reta é horizontal, <span class='f'>v = 0</span>; de 6 a 10 s a posição volta de 40 m para 0, <span class='f'>v = −10 m/s</span>.",
-   "Velocidade média usa o deslocamento: o móvel sai de 0 e termina em 0, logo <span class='f'>ΔS = 0</span> e <span class='f'>v<sub>m</sub> = 0</span>.",
-   "Velocidade escalar média usa a distância percorrida: <span class='f'>40 + 40 = 80 m</span> em 10 s → <span class='f'>8 m/s</span>."],
+{n:4,nivel:"base",tema:"Queda livre",
+ texto:"Durante uma reforma, um objeto se solta da fachada de um edifício e leva 3,0 s para chegar ao chão. Desprezando a resistência do ar e adotando g = 10 m/s², a altura de onde o objeto caiu e a velocidade com que atinge o solo são:",
+ alts:["45 m e 30 m/s","30 m e 45 m/s","90 m e 30 m/s","45 m e 15 m/s","15 m e 30 m/s"],certa:0,
+ passos:["Soltar significa <span class='f'>v₀ = 0</span>.",
+   "<span class='f'>h = ½·g·t² = ½·10·3² = 45 m</span> — cerca de um prédio de 15 andares.",
+   "<span class='f'>v = g·t = 10·3 = 30 m/s</span>, ou 108 km/h.",
+   "Note a dependência quadrática: se o tempo dobrasse para 6 s, a altura iria a 180 m, quatro vezes maior — não o dobro."],
+ resp:"45 m de altura, atingindo o solo a 30 m/s"},
+
+{n:5,nivel:"medio",tema:"Leitura de gráfico S × t",fig:G_SXT,
+ texto:"O gráfico mostra a posição de um móvel em uma trajetória retilínea durante 10 s. A velocidade média e a velocidade escalar média do móvel no intervalo de 0 a 10 s valem, respectivamente:",
+ alts:["8 m/s e 0","0 e 8 m/s","4 m/s e 8 m/s","0 e 0","10 m/s e 10 m/s"],certa:1,
+ passos:["Leia cada trecho pela inclinação: de 0 a 4 s a posição vai de 0 a 40 m, logo <span class='f'>v = +10 m/s</span>; de 4 a 6 s a reta é horizontal, <span class='f'>v = 0</span> (parado); de 6 a 10 s volta de 40 m a 0, <span class='f'>v = −10 m/s</span>.",
+   "Velocidade média usa o <b>deslocamento</b>: parte de 0 e termina em 0, então <span class='f'>ΔS = 0</span> e <span class='f'>v<sub>m</sub> = 0</span>.",
+   "Velocidade escalar média usa a <b>distância percorrida</b>: <span class='f'>40 + 40 = 80 m</span> em 10 s, logo <span class='f'>8 m/s</span>.",
+   "Duas perguntas parecidas, respostas diferentes — é exatamente isso que a questão está testando."],
  resp:"v_m = 0 e velocidade escalar média = 8 m/s"},
 
-{n:5,nivel:"medio",tema:"Leitura de gráfico v × t",fig:G_VXT,
- texto:"O gráfico representa a velocidade de um veículo em função do tempo. O deslocamento total e a velocidade média no intervalo de 0 a 20 s são:",
- alts:["400 m e 20 m/s","300 m e 20 m/s","200 m e 10 m/s","300 m e 15 m/s","250 m e 12,5 m/s"],certa:3,
- passos:["Deslocamento é a área sob a curva. A figura é um trapézio.",
-   "Triângulo inicial: <span class='f'>½·5·20 = 50 m</span>. Retângulo central: <span class='f'>10·20 = 200 m</span>. Triângulo final: <span class='f'>½·5·20 = 50 m</span>.",
-   "Total: <span class='f'>50 + 200 + 50 = 300 m</span>.",
-   "<span class='f'>v<sub>m</sub> = 300/20 = 15 m/s</span>. Note que não é 20 m/s: o veículo só esteve nessa velocidade em parte do trajeto."],
- resp:"300 m e 15 m/s"},
+{n:6,nivel:"medio",tema:"Área e inclinação no gráfico v × t",fig:G_VXT,
+ texto:"O gráfico representa a velocidade de um veículo em função do tempo. O deslocamento total no intervalo de 0 a 20 s e a aceleração no primeiro trecho valem, respectivamente:",
+ alts:["400 m e 4 m/s²","300 m e 2 m/s²","300 m e 4 m/s²","200 m e 4 m/s²","250 m e 5 m/s²"],certa:2,
+ passos:["Deslocamento é a área sob a curva — aqui, um trapézio.",
+   "Triângulo inicial: <span class='f'>½·5·20 = 50 m</span>. Retângulo central: <span class='f'>10·20 = 200 m</span>. Triângulo final: <span class='f'>½·5·20 = 50 m</span>. Total: <span class='f'>300 m</span>.",
+   "Aceleração é a inclinação: no primeiro trecho a velocidade sai de 0 e chega a 20 m/s em 5 s, então <span class='f'>a = 20/5 = 4 m/s²</span>.",
+   "Guarde o par: <b>área é deslocamento, inclinação é aceleração</b>. Essas duas ideias reaparecem inteiras em eletricidade e em ondulatória."],
+ resp:"300 m de deslocamento e a = 4 m/s²"},
 
-{n:6,nivel:"medio",tema:"MRUV · Torricelli",
- texto:"Um carro a 72 km/h freia com desaceleração constante de 5 m/s² até parar completamente. A distância percorrida durante a frenagem e o tempo gasto são:",
- alts:["80 m e 4 s","40 m e 4 s","40 m e 2 s","20 m e 4 s","144 m e 14,4 s"],certa:1,
- passos:["Converta: <span class='f'>72 ÷ 3,6 = 20 m/s</span>.",
-   "O tempo não é dado e a distância é pedida — chame Torricelli: <span class='f'>v² = v₀² + 2aΔS</span>.",
-   "<span class='f'>0 = 20² + 2(−5)ΔS</span> → <span class='f'>10ΔS = 400</span> → <span class='f'>ΔS = 40 m</span>.",
-   "Tempo por <span class='f'>v = v₀ + at</span>: <span class='f'>0 = 20 − 5t</span> → <span class='f'>t = 4 s</span>."],
- resp:"40 m em 4 s"},
-
-{n:7,nivel:"medio",tema:"Trânsito · tempo de reação",
- texto:"Um motorista trafega a 108 km/h quando avista um obstáculo. Ele leva 0,8 s para reagir (nesse intervalo o carro segue com velocidade constante) e, em seguida, freia com desaceleração de 6 m/s² até parar. A distância total percorrida desde o instante em que avistou o obstáculo é de:",
- alts:["75 m","24 m","99 m","120 m","90 m"],certa:2,
+{n:7,nivel:"medio",tema:"Trânsito · distância de segurança",
+ texto:"Campanhas de trânsito alertam que a distância necessária para parar um veículo não depende só do freio. Um motorista trafega a 108 km/h quando avista um obstáculo: ele leva 0,8 s para reagir, mantendo a velocidade, e em seguida freia com desaceleração constante de 6 m/s² até parar. A distância total percorrida desde o instante em que avistou o obstáculo é de:",
+ alts:["75 m","24 m","90 m","120 m","99 m"],certa:4,
  passos:["<span class='f'>108 ÷ 3,6 = 30 m/s</span>.",
-   "Durante a reação o movimento é MRU: <span class='f'>d₁ = 30 · 0,8 = 24 m</span>.",
-   "Na frenagem, Torricelli: <span class='f'>0 = 30² − 2·6·d₂</span> → <span class='f'>d₂ = 900/12 = 75 m</span>.",
-   "Total: <span class='f'>24 + 75 = 99 m</span>. É por isso que a distância de segurança cresce muito mais rápido do que a velocidade — o termo de frenagem depende de v²."],
- resp:"99 m (24 m de reação + 75 m de frenagem)"},
+   "Fase de reação, movimento uniforme: <span class='f'>d₁ = 30 · 0,8 = 24 m</span> — quase um ônibus de comprimento antes de o pé sequer tocar o freio.",
+   "Fase de frenagem, sem o tempo entre os dados: Torricelli. <span class='f'>0 = 30² − 2·6·d₂</span> → <span class='f'>d₂ = 900/12 = 75 m</span>.",
+   "<span class='f'>d = 24 + 75 = 99 m</span>.",
+   "O termo de frenagem depende de <span class='f'>v²</span>: a 60 km/h ele cairia para cerca de 23 m. Dobrar a velocidade quadruplica esse pedaço da conta."],
+ resp:"99 m no total — 24 m de reação e 75 m de frenagem"},
 
-{n:8,nivel:"base",tema:"Queda livre",
- texto:"Um objeto é abandonado do repouso do alto de um prédio e atinge o solo 3,0 s depois. Desprezando a resistência do ar e adotando g = 10 m/s², a altura do prédio e a velocidade de impacto são:",
- alts:["45 m e 30 m/s","30 m e 45 m/s","90 m e 30 m/s","45 m e 15 m/s","15 m e 30 m/s"],certa:0,
- passos:["Abandonado do repouso significa <span class='f'>v₀ = 0</span>.",
-   "<span class='f'>h = ½·g·t² = ½·10·3² = 45 m</span>.",
-   "<span class='f'>v = g·t = 10·3 = 30 m/s</span> (equivale a 108 km/h).",
-   "Cuidado: dobrar o tempo de queda quadruplica a altura, não dobra."],
- resp:"45 m de altura, chegando ao solo a 30 m/s"},
+{n:8,nivel:"medio",tema:"Lançamento vertical",
+ texto:"O jato de água de um chafariz é lançado verticalmente para cima e atinge a altura máxima de 20 m. Desprezando a resistência do ar e adotando g = 10 m/s², a velocidade com que a água deixa o bocal e o tempo que uma porção de água leva para subir e retornar ao nível do bocal são:",
+ alts:["10 m/s e 2,0 s","20 m/s e 2,0 s","40 m/s e 4,0 s","20 m/s e 4,0 s","14 m/s e 2,8 s"],certa:3,
+ passos:["A questão inverte o caminho de sempre: dá a altura e pede a velocidade inicial.",
+   "No ponto mais alto <span class='f'>v = 0</span>. Por Torricelli: <span class='f'>0 = v₀² − 2·10·20</span> → <span class='f'>v₀² = 400</span> → <span class='f'>v₀ = 20 m/s</span>.",
+   "Tempo de subida: <span class='f'>0 = 20 − 10t</span> → <span class='f'>t = 2,0 s</span>.",
+   "Subida e descida são simétricas, então o tempo total é <span class='f'>4,0 s</span>.",
+   "A água volta ao bocal com 20 m/s, mesmo módulo da saída — sinal trocado."],
+ resp:"20 m/s de saída, 4,0 s no ar"},
 
-{n:9,nivel:"medio",tema:"Lançamento vertical",
- texto:"Uma bola é lançada verticalmente para cima com velocidade inicial de 25 m/s. Adotando g = 10 m/s² e desprezando a resistência do ar, a altura máxima atingida e o tempo total até a bola retornar ao ponto de lançamento são:",
- alts:["62,5 m e 5,0 s","31,25 m e 2,5 s","12,5 m e 5,0 s","25 m e 2,5 s","31,25 m e 5,0 s"],certa:4,
- passos:["No ponto mais alto, <span class='f'>v = 0</span>. Por Torricelli: <span class='f'>0 = 25² − 2·10·H</span> → <span class='f'>H = 625/20 = 31,25 m</span>.",
-   "Tempo de subida: <span class='f'>0 = 25 − 10t</span> → <span class='f'>t = 2,5 s</span>.",
-   "Como subida e descida são simétricas, o tempo total é <span class='f'>2 · 2,5 = 5,0 s</span>.",
-   "A bola volta ao ponto de partida com o mesmo módulo de velocidade, 25 m/s, mas para baixo."],
- resp:"H = 31,25 m e t total = 5,0 s"},
+{n:9,nivel:"medio",tema:"MRU × MRUV · alcance",
+ texto:"No instante em que o sinal abre, um carro parte do repouso com aceleração constante de 2,0 m/s². No mesmo instante e a partir da mesma posição, uma moto passa por ele mantendo velocidade constante de 8,0 m/s. O carro alcança a moto em:",
+ alts:["8,0 s, a 64 m do sinal","4,0 s, a 32 m do sinal","8,0 s, a 32 m do sinal","16 s, a 128 m do sinal","4,0 s, a 16 m do sinal"],certa:0,
+ passos:["Funções horárias, com origem no sinal: carro <span class='f'>S<sub>c</sub> = ½·2·t² = t²</span>; moto <span class='f'>S<sub>m</sub> = 8t</span>.",
+   "Alcançar é ocupar a mesma posição: <span class='f'>t² = 8t</span> → <span class='f'>t(t − 8) = 0</span>.",
+   "A raiz <span class='f'>t = 0</span> é o próprio instante da largada; a resposta útil é <span class='f'>t = 8,0 s</span>.",
+   "Posição: <span class='f'>S = 8·8 = 64 m</span>.",
+   "Vale notar: nesse instante o carro já está a <span class='f'>v = 2·8 = 16 m/s</span>, o dobro da moto. Ele passou quase todo o intervalo atrás justamente por ter começado parado."],
+ resp:"8,0 s após a largada, a 64 m do sinal"},
 
-{n:10,nivel:"dificil",tema:"Lançamento oblíquo",
- texto:"Um projétil é lançado do solo com velocidade de 50 m/s formando 37° com a horizontal. Use sen 37° = 0,6, cos 37° = 0,8 e g = 10 m/s². O alcance horizontal e a altura máxima são, respectivamente:",
- alts:["120 m e 45 m","240 m e 45 m","240 m e 90 m","300 m e 45 m","180 m e 30 m"],certa:1,
- passos:["Decomponha: <span class='f'>v₀ₓ = 50·0,8 = 40 m/s</span> e <span class='f'>v₀ᵧ = 50·0,6 = 30 m/s</span>.",
-   "O movimento vertical decide o tempo. Subida: <span class='f'>0 = 30 − 10t</span> → <span class='f'>t = 3 s</span>; voo total <span class='f'>6 s</span>.",
-   "Altura máxima: <span class='f'>H = 30²/(2·10) = 45 m</span>.",
-   "Alcance é MRU na horizontal: <span class='f'>A = 40 · 6 = 240 m</span>.",
-   "No topo da trajetória a velocidade não é nula: vale <span class='f'>40 m/s</span>, na horizontal."],
- resp:"Alcance de 240 m e altura máxima de 45 m"},
-
-{n:11,nivel:"dificil",tema:"Movimento circular · acoplamentos",
- texto:"Na transmissão de uma bicicleta, a coroa (raio 20 cm) e a catraca (raio 5 cm) são ligadas pela corrente. A catraca é solidária à roda traseira, de raio 35 cm. Se o ciclista pedala a 60 rpm, a velocidade da bicicleta é de aproximadamente (use π ≈ 3):",
- alts:["1,2 m/s","2,1 m/s","4,2 m/s","8,4 m/s","33,6 m/s"],certa:3,
- passos:["60 rpm = <span class='f'>1 Hz</span> na coroa.",
-   "Corrente ligando coroa e catraca → mesma velocidade linear: <span class='f'>v = 2πf·R = 2·3·1·0,20 = 1,2 m/s</span>.",
-   "Na catraca, essa mesma <span class='f'>v</span> vira frequência: <span class='f'>1,2 = 2·3·f·0,05</span> → <span class='f'>f = 4 Hz</span>. A catraca gira 4× mais rápido, porque seu raio é 4× menor.",
-   "Roda e catraca no mesmo eixo → mesma frequência. Logo <span class='f'>v<sub>bike</sub> = 2·3·4·0,35 = 8,4 m/s</span> ≈ 30 km/h.",
-   "Regra de ouro: <b>corrente/correia → mesmo v</b>; <b>mesmo eixo → mesmo ω</b>."],
+{n:10,nivel:"medio",tema:"Movimento circular · acoplamentos",
+ texto:"Na transmissão de uma bicicleta, a coroa (raio 20 cm) e a catraca (raio 5 cm) são ligadas pela corrente, e a catraca é solidária à roda traseira, de raio 35 cm. Se o ciclista pedala a 60 rpm, a velocidade da bicicleta em relação ao solo é de aproximadamente (use π ≈ 3):",
+ alts:["1,2 m/s","2,1 m/s","8,4 m/s","4,2 m/s","33,6 m/s"],certa:2,
+ passos:["60 rpm significa uma volta por segundo: <span class='f'>f<sub>coroa</sub> = 1 Hz</span>.",
+   "Corrente ligando coroa e catraca impõe a <b>mesma velocidade linear</b> nas bordas: <span class='f'>v = 2πf·R = 2·3·1·0,20 = 1,2 m/s</span>.",
+   "Na catraca, essa mesma velocidade vira frequência: <span class='f'>1,2 = 2·3·f·0,05</span> → <span class='f'>f = 4 Hz</span>. Raio 4 vezes menor, frequência 4 vezes maior.",
+   "Roda e catraca giram no mesmo eixo, então compartilham a frequência: <span class='f'>v = 2·3·4·0,35 = 8,4 m/s</span>, cerca de 30 km/h.",
+   "As duas regras que resolvem qualquer acoplamento: <b>corrente ou correia → mesmo v</b>; <b>mesmo eixo → mesmo ω</b>."],
  resp:"≈ 8,4 m/s (cerca de 30 km/h)"},
 
-{n:12,nivel:"dificil",tema:"MRU × MRUV · alcance",
- texto:"No instante em que o sinal abre, um carro parte do repouso com aceleração constante de 2 m/s². No mesmo instante e da mesma posição, uma moto passa por ele com velocidade constante de 8 m/s. O carro alcança a moto em:",
- alts:["4 s, a 32 m do sinal","16 s, a 128 m do sinal","8 s, a 64 m do sinal","8 s, a 32 m do sinal","4 s, a 16 m do sinal"],certa:2,
- passos:["Funções horárias: carro <span class='f'>S<sub>c</sub> = ½·2·t² = t²</span>; moto <span class='f'>S<sub>m</sub> = 8t</span>.",
-   "Alcance: <span class='f'>t² = 8t</span> → <span class='f'>t(t − 8) = 0</span> → <span class='f'>t = 0</span> (a largada) ou <span class='f'>t = 8 s</span>.",
-   "Posição: <span class='f'>S = 8·8 = 64 m</span>.",
-   "Detalhe que costuma cair junto: nesse instante o carro já está a <span class='f'>v = 2·8 = 16 m/s</span>, o dobro da moto — ele alcança justamente por ter passado a maior parte do tempo mais devagar."],
- resp:"8 s depois da largada, a 64 m do sinal"}
+{n:11,nivel:"dificil",tema:"Lançamento oblíquo com obstáculo",
+ texto:"Um projétil é lançado do solo com velocidade de 50 m/s formando 37° com a horizontal. A 160 m do ponto de lançamento existe um muro vertical de 40 m de altura. Usando sen 37° = 0,6, cos 37° = 0,8 e g = 10 m/s², a altura em que o projétil cruza a vertical do muro é:",
+ alts:["30 m","40 m","45 m","60 m","o projétil não chega ao muro"],certa:1,
+ passos:["Decomponha a velocidade inicial: <span class='f'>v₀ₓ = 50·0,8 = 40 m/s</span> e <span class='f'>v₀ᵧ = 50·0,6 = 30 m/s</span>.",
+   "O movimento horizontal é uniforme, e é ele que fornece o instante: <span class='f'>160 = 40·t</span> → <span class='f'>t = 4,0 s</span>.",
+   "O vertical é MRUV: <span class='f'>y = 30·4 − 5·4² = 120 − 80 = 40 m</span>.",
+   "Ou seja, o projétil passa exatamente rente ao topo do muro.",
+   "Para dimensionar: a altura máxima é <span class='f'>30²/20 = 45 m</span>, atingida em <span class='f'>t = 3,0 s</span>, e o alcance total seria <span class='f'>40·6 = 240 m</span>. O muro está depois do ponto mais alto, já na descida."],
+ resp:"40 m — passa exatamente na altura do topo do muro"},
+
+{n:12,nivel:"dificil",tema:"Queda livre · último segundo",
+ texto:"Um corpo é abandonado do repouso e cai livremente. Sabe-se que, no último segundo de queda, ele percorre 25 m. Desprezando a resistência do ar e adotando g = 10 m/s², a altura total de onde o corpo foi abandonado é de:",
+ alts:["25 m","80 m","125 m","45 m","30 m"],certa:3,
+ passos:["Chame de <span class='f'>t</span> o tempo total de queda. A altura vale <span class='f'>h = 5t²</span>.",
+   "A altura percorrida até um segundo antes do fim é <span class='f'>h' = 5(t − 1)²</span>.",
+   "O último segundo é a diferença: <span class='f'>5t² − 5(t−1)² = 25</span>.",
+   "Expandindo: <span class='f'>5t² − 5t² + 10t − 5 = 25</span> → <span class='f'>10t = 30</span> → <span class='f'>t = 3,0 s</span>.",
+   "Altura total: <span class='f'>h = 5·3² = 45 m</span>. Confira: até 2 s são 20 m, e de fato faltam 25 m para os 45 m.",
+   "Erro clássico: aplicar <span class='f'>h = 5t²</span> direto nos 25 m e responder algo em torno de 2,2 s. Os 25 m não são medidos a partir do repouso."],
+ resp:"45 m (tempo total de queda: 3,0 s)"},
+
+{n:13,nivel:"dificil",tema:"Movimento composto · travessia de rio",
+ texto:"Um barco atravessa um rio de 80 m de largura mantendo a proa sempre perpendicular às margens, com velocidade de 4,0 m/s em relação à água. A correnteza tem velocidade constante de 3,0 m/s em relação às margens. O tempo de travessia e o módulo do deslocamento do barco entre a saída e a chegada são:",
+ alts:["16 s e 80 m","20 s e 80 m","20 s e 140 m","11,4 s e 80 m","20 s e 100 m"],certa:4,
+ passos:["Movimentos perpendiculares são independentes: a correnteza não ajuda nem atrapalha a travessia.",
+   "Tempo, pelo movimento perpendicular à margem: <span class='f'>t = 80/4,0 = 20 s</span>.",
+   "Nesse tempo a correnteza arrasta o barco rio abaixo: <span class='f'>d = 3,0 · 20 = 60 m</span>.",
+   "O deslocamento é a soma vetorial dos dois: <span class='f'>√(80² + 60²) = √10000 = 100 m</span>.",
+   "Confirmação pela velocidade resultante: <span class='f'>√(4² + 3²) = 5,0 m/s</span>, e <span class='f'>5,0 · 20 = 100 m</span>. Aqui é o triângulo 3-4-5 dos vetores que vocês já viram.",
+   "Pegadinha frequente: achar que a correnteza aumenta o tempo de travessia. Ela só desloca a chegada rio abaixo."],
+ resp:"20 s de travessia, deslocamento de 100 m"},
+
+{n:14,nivel:"dificil",tema:"Gráfico v × t com inversão de sentido",fig:G_VNEG,
+ texto:"O gráfico mostra a velocidade de um móvel em trajetória retilínea ao longo de 12 s. O deslocamento total e a distância percorrida pelo móvel nesse intervalo valem, respectivamente:",
+ alts:["150 m e 150 m","60 m e 150 m","0 e 150 m","0 e 0","120 m e 150 m"],certa:2,
+ passos:["Áreas abaixo do eixo do tempo contam como deslocamento negativo — é o móvel voltando.",
+   "De 0 a 4 s: <span class='f'>+15 · 4 = +60 m</span>.",
+   "De 4 a 8 s a velocidade cai de +15 para −15, cruzando zero em 6 s. São dois triângulos iguais: <span class='f'>+½·2·15 = +15 m</span> e <span class='f'>−½·2·15 = −15 m</span>, que se cancelam.",
+   "De 8 a 12 s: <span class='f'>−15 · 4 = −60 m</span>.",
+   "Deslocamento: <span class='f'>+60 + 0 − 60 = 0</span>. O móvel terminou onde começou.",
+   "Distância percorrida soma as áreas em módulo: <span class='f'>60 + 15 + 15 + 60 = 150 m</span>. E a velocidade escalar média foi <span class='f'>150/12 = 12,5 m/s</span>, enquanto a velocidade média foi zero."],
+ resp:"Deslocamento nulo, 150 m percorridos"}
 ];
 
 const palco = document.getElementById('palco');
