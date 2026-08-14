@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Vestibular">
+<meta name="theme-color" content="#EDF1F0">
+<title>Cinemática — questões de vestibular</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#12232E;
+  --tinta-70:#12232Eb3;
+  --papel:#EDF1F0;
+  --grade:#CBD8D6;
+  --laranja:#E4572E;
+  --ciano:#007EA7;
+  --amarelo:#F4B942;
+  --verde:#1B998B;
+  --branco:#FBFCFC;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--papel);
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 9px, var(--grade) 9px 10px),
+    repeating-linear-gradient(90deg, transparent 0 9px, var(--grade) 9px 10px),
+    repeating-linear-gradient(0deg, transparent 0 49px, #b7c8c5 49px 50px),
+    repeating-linear-gradient(90deg, transparent 0 49px, #b7c8c5 49px 50px);
+  background-blend-mode:normal;
+  color:var(--tinta);
+  font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  font-size:16px;
+  overflow:hidden;
+}
+body::before{content:"";position:fixed;inset:0;background:var(--papel);opacity:.55;pointer-events:none;z-index:0}
+
+/* ---------- estrutura do deck ---------- */
+.deck{position:relative;z-index:1;height:100vh;display:flex;flex-direction:column}
+.topo{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px 28px 0;font-family:'IBM Plex Mono',monospace;font-size:12px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-70);
+}
+.topo .marca{font-weight:600;color:var(--tinta)}
+.topo .voltar{color:var(--tinta-70);text-decoration:none;border:1.5px solid var(--grade);border-radius:100px;
+  padding:3px 10px;margin-right:8px;display:inline-block}
+.topo .voltar:hover{border-color:var(--tinta);color:var(--tinta)}
+.palco{flex:1;overflow-y:auto;padding:10px 28px 8px;scrollbar-width:thin}
+.slide{display:none;max-width:1180px;margin:0 auto;animation:entra .28s ease-out}
+.slide.on{display:block}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.slide{animation:none}}
+
+h1{font-family:'Archivo',sans-serif;font-weight:900;letter-spacing:-.03em;line-height:.94;margin:0}
+h2{font-family:'Archivo',sans-serif;font-weight:900;letter-spacing:-.02em;font-size:clamp(24px,3.4vw,40px);line-height:1.02;margin:0 0 4px}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--laranja);font-weight:600;margin-bottom:10px}
+code,.f{font-family:'IBM Plex Mono',monospace}
+
+/* ---------- capa ---------- */
+.capa{padding:min(6vh,60px) 0}
+.capa h1{font-size:clamp(46px,9vw,110px)}
+.capa .sub{font-size:clamp(16px,2vw,22px);max-width:640px;margin-top:18px;color:var(--tinta-70)}
+.capa .faixa{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  border:1.5px solid var(--tinta);padding:6px 12px;border-radius:100px}
+.tag.forte{background:var(--tinta);color:var(--papel)}
+
+/* ---------- estroboscópio (assinatura) ---------- */
+.estrobo{display:flex;align-items:center;gap:0;padding:10px 28px 18px}
+.estrobo .bola{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--tinta);opacity:.28;
+  margin-right:6px;flex:0 0 auto;background:transparent;cursor:pointer;padding:0;transition:all .18s}
+.estrobo .bola.passou{background:var(--tinta);opacity:.22;border-color:transparent}
+.estrobo .bola.agora{background:var(--laranja);border-color:var(--laranja);opacity:1;
+  width:15px;height:15px;box-shadow:-8px 0 0 -4px #E4572E66, -15px 0 0 -5px #E4572E33}
+.estrobo .bola:focus-visible{outline:2px solid var(--ciano);outline-offset:3px}
+
+/* ---------- mapa mental ---------- */
+.mapa{position:relative;display:grid;grid-template-columns:1fr .82fr 1fr;gap:14px 26px;align-items:center;margin-top:12px}
+.mapa svg.fios{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.ramo{position:relative;background:var(--branco);border:1.5px solid var(--tinta);border-radius:3px;
+  padding:12px 14px;box-shadow:3px 3px 0 var(--tinta);z-index:1}
+.ramo h3{font-family:'Archivo',sans-serif;font-size:15px;font-weight:700;margin:0 0 7px;text-transform:uppercase;letter-spacing:.02em}
+.ramo h3 span{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.ramo ul{margin:0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.55}
+.ramo li+li{margin-top:2px}
+.ramo .f{font-size:13px;background:#12232E0d;padding:1px 5px;border-radius:3px;display:inline-block}
+.nucleo{background:var(--tinta);color:var(--papel);border-radius:50%;aspect-ratio:1;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;z-index:2;
+  box-shadow:0 0 0 8px #12232E14}
+.nucleo strong{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(20px,2.6vw,34px);letter-spacing:-.02em;line-height:1}
+.nucleo em{font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--amarelo);margin-top:8px;max-width:15ch;line-height:1.4}
+.coluna{display:grid;gap:14px}
+
+/* ---------- painéis genéricos ---------- */
+.duplo{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:14px}
+.painel{background:var(--branco);border:1.5px solid var(--tinta);border-radius:3px;padding:16px 18px;box-shadow:3px 3px 0 var(--tinta)}
+.painel h3{font-family:'Archivo',sans-serif;font-size:16px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.02em}
+.passos{counter-reset:p;list-style:none;margin:0;padding:0}
+.passos li{counter-increment:p;position:relative;padding-left:34px;margin-bottom:11px;font-size:14.5px;line-height:1.5}
+.passos li::before{content:counter(p);position:absolute;left:0;top:0;width:23px;height:23px;border-radius:50%;
+  background:var(--tinta);color:var(--papel);font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;
+  display:flex;align-items:center;justify-content:center}
+.erros{list-style:none;margin:0;padding:0}
+.erros li{font-size:14.5px;line-height:1.5;padding-left:26px;position:relative;margin-bottom:10px}
+.erros li::before{content:"✕";position:absolute;left:0;top:1px;color:var(--laranja);font-weight:700}
+.erros b{background:#F4B94255;padding:0 3px}
+
+/* ---------- exercícios ---------- */
+.ex-topo{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.nivel{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  padding:3px 9px;border-radius:100px;border:1.5px solid}
+.nivel.base{color:var(--ciano);border-color:var(--ciano)}
+.nivel.medio{color:var(--verde);border-color:var(--verde)}
+.nivel.dificil{color:var(--laranja);border-color:var(--laranja)}
+.enunciado{font-size:clamp(16px,1.8vw,20px);line-height:1.55;max-width:75ch}
+.ex-corpo{display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:start}
+.ex-corpo.solo{grid-template-columns:1fr}
+.figura{background:var(--branco);border:1.5px solid var(--tinta);border-radius:3px;padding:8px;box-shadow:3px 3px 0 var(--tinta)}
+.figura svg{width:100%;height:auto;display:block}
+.alts{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:7px;max-width:62ch}
+.alts button{width:100%;text-align:left;font:inherit;font-size:15.5px;background:var(--branco);
+  border:1.5px solid var(--tinta);border-radius:3px;padding:9px 13px;cursor:pointer;display:flex;gap:11px;
+  align-items:baseline;transition:transform .12s,background .12s}
+.alts button:hover{transform:translateX(3px)}
+.alts button:focus-visible{outline:2px solid var(--ciano);outline-offset:2px}
+.alts .letra{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--tinta-70)}
+.alts button.certa{background:#1B998B;border-color:#1B998B;color:#fff}
+.alts button.certa .letra{color:#ffffffcc}
+.alts button.errada{background:#E4572E22;border-color:var(--laranja);opacity:.75}
+.acoes{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--tinta);color:var(--papel);border:1.5px solid var(--tinta);border-radius:100px;
+  padding:9px 18px;cursor:pointer}
+.btn.vazio{background:transparent;color:var(--tinta)}
+.btn:focus-visible{outline:2px solid var(--ciano);outline-offset:3px}
+.resolucao{margin-top:16px;border-left:4px solid var(--amarelo);background:var(--branco);
+  padding:14px 18px;border-radius:0 3px 3px 0;display:none}
+.resolucao.on{display:block;animation:entra .2s ease-out}
+.resolucao h4{font-family:'Archivo',sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.1em;margin:0 0 9px;color:var(--tinta-70)}
+.resolucao ol{margin:0;padding-left:20px;font-size:15px;line-height:1.65}
+.resolucao li{margin-bottom:5px}
+.resolucao .f{background:#12232E0d;padding:1px 5px;border-radius:3px}
+.resposta{margin-top:11px;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;
+  background:var(--tinta);color:var(--papel);display:inline-block;padding:6px 13px;border-radius:3px}
+
+/* ---------- gráficos interativos ---------- */
+.fonte{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--tinta-70)}
+.figura.inter{padding:11px 12px}
+.wcanvas{width:100%;display:block}
+.wctrl{display:grid;gap:7px;margin-top:6px}
+.wctrl label{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--tinta-70)}
+.wctrl input[type=range]{width:100%;accent-color:var(--laranja);margin:0}
+.wctrl b{font-variant-numeric:tabular-nums;min-width:58px;text-align:right;color:var(--tinta)}
+.wleitura{margin-top:9px;padding-top:8px;border-top:1px solid var(--grade);
+  font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.65;color:var(--tinta-70)}
+.wleitura em{font-style:normal;color:var(--laranja);font-weight:600}
+
+/* ---------- gabarito ---------- */
+.gab{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-top:16px}
+.gab div{background:var(--branco);border:1.5px solid var(--tinta);border-radius:3px;text-align:center;padding:9px 4px;box-shadow:2px 2px 0 var(--tinta)}
+.gab span{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--tinta-70)}
+.gab strong{font-family:'Archivo',sans-serif;font-size:22px}
+
+.dica{margin-top:20px;font-size:14px;color:var(--tinta-70);max-width:70ch;line-height:1.6}
+
+@media (max-width:900px){
+  .mapa{grid-template-columns:1fr}
+  .mapa svg.fios{display:none}
+  .nucleo{aspect-ratio:auto;border-radius:3px;padding:22px}
+  .duplo,.ex-corpo{grid-template-columns:1fr}
+  .palco{padding:10px 16px}
+  .topo,.estrobo{padding-left:16px;padding-right:16px}
+}
+
+/* ---------- caneta sem interferência ---------- */
+html, body{
+  -webkit-user-select:none; -moz-user-select:none; user-select:none;
+  -webkit-touch-callout:none; -webkit-tap-highlight-color:transparent;
+  overscroll-behavior:none; touch-action:manipulation;
+}
+.palco, .mundo, .captura, canvas.camada{
+  -webkit-user-select:none; user-select:none; -webkit-touch-callout:none;
+}
+/* com a caneta na tela a interface sai do caminho */
+body.modo-caneta .captura{cursor:crosshair}
+body.modo-caneta .ferramentas{opacity:.35}
+body.modo-caneta .estrobo{pointer-events:none; opacity:.45}
+.aviso-caneta{
+  position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+  z-index:30; background:var(--tinta); color:var(--papel);
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.06em;
+  padding:8px 15px; border-radius:100px; opacity:0; pointer-events:none;
+  transition:opacity .25s; white-space:nowrap;
+}
+.aviso-caneta.on{opacity:.94}
+.ferramentas button.implicita{box-shadow:inset 0 0 0 1.5px var(--laranja); border-color:var(--laranja)}
+
+
+/* ---------- lousa: escrever por cima do slide ---------- */
+.palco{position:relative;overflow:hidden;padding:0;touch-action:none;-webkit-user-select:none;user-select:none}
+.mundo{width:1240px;transform-origin:0 0;padding:16px 30px 90px;position:relative;z-index:1}
+canvas.camada{position:absolute;inset:0;pointer-events:none}
+#tela{z-index:5}
+#viva{z-index:6}
+.captura{position:absolute;inset:0;z-index:8;touch-action:none;cursor:grab}
+.captura.escrevendo{cursor:crosshair}
+.zoomlabel{position:fixed;right:20px;bottom:26px;z-index:20;font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:.1em;color:var(--tinta-70);background:#FBFCFCcc;padding:3px 9px;border-radius:100px}
+.quadro{position:absolute;inset:0;z-index:4;display:none;background:var(--branco);
+  background-image:repeating-linear-gradient(0deg,transparent 0 39px,#E3EAE9 39px 40px)}
+.quadro.on{display:block}
+.ferramentas{position:fixed;right:20px;bottom:70px;z-index:20;display:flex;flex-direction:column;gap:5px;
+  background:var(--branco);border:1.5px solid var(--tinta);border-radius:100px;padding:8px;
+  box-shadow:3px 3px 0 var(--tinta)}
+.ferramentas button{width:36px;height:36px;border-radius:50%;border:1.5px solid transparent;background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;
+  font-family:'IBM Plex Mono',monospace;color:var(--tinta);padding:0}
+.ferramentas button:hover{background:#12232E12}
+.ferramentas button.on{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+.ferramentas button:focus-visible{outline:2px solid var(--ciano);outline-offset:2px}
+.ferramentas{-webkit-user-select:none;user-select:none;touch-action:manipulation;transition:opacity .18s}
+.ferramentas.sumindo{opacity:.18;pointer-events:none}
+.ferramentas.recolhida{gap:0}
+.ferramentas.recolhida button:not([data-a="recolher"]),.ferramentas.recolhida hr{display:none}
+.ferramentas .cor i{display:block;width:17px;height:17px;border-radius:50%;border:1.5px solid #12232E33}
+.ferramentas .cor.on{background:transparent;border-color:var(--tinta)}
+.ferramentas hr{border:0;border-top:1px solid var(--grade);width:20px;margin:3px auto}
+@media (max-width:900px){.ferramentas{right:8px;bottom:58px;padding:6px}
+  .ferramentas button{width:32px;height:32px}}
+
+@media print{
+  .ferramentas,.captura,canvas.camada,.zoomlabel,.quadro{display:none!important}
+  .mundo{transform:none!important;width:auto;padding:0}
+  .palco{overflow:visible;height:auto;padding:0 24px}
+  body{background:#fff;overflow:visible}
+  .slide{display:block!important;page-break-after:always;padding:20px 0}
+  .estrobo,.topo{display:none}
+  .resolucao{display:block!important}
+  .palco{overflow:visible;height:auto}
+}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="topo">
+    <div class="marca"><a href="index.html" class="voltar">← Aulas</a> Física · Vestibular</div>
+    <div><span id="contador">01</span> / <span id="total">17</span> &nbsp;·&nbsp; ← → para navegar</div>
+  </div>
+
+  <div class="palco" id="palco">
+
+    <!-- CAPA -->
+    <section class="slide on capa">
+      <div class="eyebrow">Cinemática · lista de vestibular</div>
+      <h1>MRU e<br>MRUV<br>na prova.</h1>
+      <p class="sub">Vinte e três questões de ENEM e vestibulares, de 2010 a 2013, em ordem crescente
+      de dificuldade — cada uma com resolução passo a passo e a banca identificada.</p>
+      <div class="faixa">
+        <span class="tag forte">23 questões</span>
+        <span class="tag">Resolução comentada</span>
+        <span class="tag">Bancas identificadas</span>
+        <span class="tag">g = 10 m/s²</span>
+      </div>
+    </section>
+
+    <!-- O QUE A LISTA COBRA -->
+    <section class="slide">
+      <div class="eyebrow">Antes de começar</div>
+      <h2>O que essas bancas cobram<br>em cinemática</h2>
+      <div class="duplo">
+        <div class="painel">
+          <h3>Os cinco temas que mais aparecem</h3>
+          <ol class="passos">
+            <li><b>Conversão e unidade.</b> Nó, milha, km/h, metros por hora. Boa parte das questões fáceis é só isso.</li>
+            <li><b>Movimento relativo.</b> Barco e correnteza, dois veículos, ultrapassagem. Some ou subtraia as velocidades conforme o sentido.</li>
+            <li><b>Encontro e alcance.</b> Monte as duas funções horárias e iguale. Atenção a quem partiu antes.</li>
+            <li><b>Leitura de gráfico.</b> Extraia a aceleração da inclinação e o deslocamento da área — os valores nunca vêm no texto.</li>
+            <li><b>Torricelli.</b> Sempre que o tempo não aparece nos dados nem é pedido.</li>
+          </ol>
+        </div>
+        <div class="painel">
+          <h3>Onde a lista costuma derrubar</h3>
+          <ul class="erros">
+            <li>Parar na <b>primeira conta</b> quando a questão pede duas coisas (é o caso do semáforo amarelo).</li>
+            <li>Somar velocidades de movimentos <b>perpendiculares</b> em vez de compor por Pitágoras.</li>
+            <li>Contar o tempo a partir do <b>móvel errado</b> em problemas com partida atrasada.</li>
+            <li>Esquecer que corpos extensos (trem, caminhão) percorrem <b>o próprio comprimento</b> a mais.</li>
+            <li>Fazer <b>média aritmética</b> de velocidades em vez de dividir distância total por tempo total.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- os exercícios entram aqui via JS -->
+  </div>
+
+  <nav class="estrobo" id="estrobo" aria-label="Navegação entre slides"></nav>
+</div>
+
+<script>
+/* ---------- motor dos gráficos interativos ---------- */
+function widget(host, altura, controles, desenha){
+  host.innerHTML = '';
+  const cv = document.createElement('canvas'); cv.className = 'wcanvas';
+  const ctrl = document.createElement('div'); ctrl.className = 'wctrl';
+  const leitura = document.createElement('div'); leitura.className = 'wleitura';
+  host.append(cv, ctrl, leitura);
+  const est = {};
+  controles.forEach(c=>{
+    est[c.k] = c.v;
+    const l = document.createElement('label');
+    const nome = document.createElement('span'); nome.textContent = c.rot;
+    const inp = document.createElement('input');
+    inp.type = 'range'; inp.min = c.min; inp.max = c.max; inp.step = c.passo; inp.value = c.v;
+    inp.setAttribute('aria-label', c.rot);
+    const val = document.createElement('b');
+    const mostra = ()=> val.textContent = c.fmt ? c.fmt(est[c.k]) : est[c.k];
+    inp.addEventListener('input', ()=>{ est[c.k] = +inp.value; mostra(); render(); });
+    mostra();
+    l.append(nome, inp, val); ctrl.appendChild(l);
+  });
+  function render(){
+    const w = host.clientWidth || 300, h = altura, e = 2;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cv.width = w * e; cv.height = h * e;
+    const x = cv.getContext('2d');
+    x.setTransform(e, 0, 0, e, 0, 0);
+    x.clearRect(0, 0, w, h);
+    x.lineCap = 'round'; x.lineJoin = 'round';
+    x.font = "10px 'IBM Plex Mono', monospace";
+    leitura.innerHTML = desenha(x, w, h, est) || '';
+  }
+  host._render = render;
+  render();
+}
+
+const TINTA = '#12232E', LARANJA = '#E4572E', CIANO = '#007EA7', AMARELO = '#F4B942', VERDE = '#1B998B';
+
+function eixos(x, w, h, m){
+  x.strokeStyle = TINTA; x.lineWidth = 1.5;
+  x.beginPath(); x.moveTo(m.e, 8); x.lineTo(m.e, h - m.b); x.lineTo(w - 6, h - m.b); x.stroke();
+}
+
+/* interpolação linear em uma lista de pontos {t, y} */
+function interp(pts, chave, t){
+  for(let i = 1; i < pts.length; i++){
+    if(t <= pts[i].t){
+      const a = pts[i-1], b = pts[i];
+      const f = (t - a.t) / (b.t - a.t || 1);
+      return a[chave] + (b[chave] - a[chave]) * f;
+    }
+  }
+  return pts[pts.length-1][chave];
+}
+
+function montaInter(host, cfg){
+  const tipo = cfg.tipo;
+
+  /* ---- pista circular: distância x deslocamento ---- */
+  if(tipo === 'circular'){
+    widget(host, 190, [{k:'n', rot:'voltas', min:0, max:2, passo:.25, v:1.5, fmt:v=>v.toFixed(2)}],
+    (x,w,h,e)=>{
+      const cxp = w/2, cy = h/2, R = 62, r = 50, ang = e.n * 2 * Math.PI;
+      x.strokeStyle = '#CBD8D6'; x.lineWidth = 8;
+      x.beginPath(); x.arc(cxp, cy, R, 0, 6.2832); x.stroke();
+      x.strokeStyle = LARANJA; x.lineWidth = 8;
+      x.beginPath(); x.arc(cxp, cy, R, -Math.PI/2, -Math.PI/2 + ang); x.stroke();
+      const px = cxp + R*Math.cos(-Math.PI/2 + ang), py = cy + R*Math.sin(-Math.PI/2 + ang);
+      x.setLineDash([4,4]); x.strokeStyle = CIANO; x.lineWidth = 2;
+      x.beginPath(); x.moveTo(cxp, cy - R); x.lineTo(px, py); x.stroke(); x.setLineDash([]);
+      x.fillStyle = TINTA; x.beginPath(); x.arc(cxp, cy - R, 5, 0, 6.2832); x.fill();
+      x.fillStyle = LARANJA; x.beginPath(); x.arc(px, py, 6, 0, 6.2832); x.fill();
+      const d = e.n * 2 * 3 * r, desl = 2 * r * Math.abs(Math.sin(ang/2));
+      return `distância percorrida: <em>${d.toFixed(0)} m</em><br>deslocamento: <em>${desl.toFixed(0)} m</em>` +
+             (Math.abs(desl) < 1 ? '<br>voltas inteiras zeram o deslocamento' : '');
+    });
+    return;
+  }
+
+  /* ---- trem atravessando o túnel ---- */
+  if(tipo === 'trem'){
+    widget(host, 150, [{k:'t', rot:'tempo', min:0, max:45, passo:.5, v:0, fmt:v=>v.toFixed(1)+' s'}],
+    (x,w,h,e)=>{
+      const esc = (w - 30) / 1200, base = h/2, X = m => 15 + (m + 300) * esc;
+      x.fillStyle = '#CBD8D6'; x.fillRect(X(0), base - 26, 600*esc, 44);
+      x.fillStyle = TINTA; x.fillText('túnel · 600 m', X(180), base - 32);
+      const f = 20 * e.t, tr = f - 200;
+      x.fillStyle = LARANJA;
+      x.fillRect(X(Math.max(tr,-300)), base - 12, Math.min(200, f + 300) * esc, 22);
+      x.strokeStyle = TINTA; x.lineWidth = 1.5;
+      x.beginPath(); x.moveTo(X(0), base - 32); x.lineTo(X(0), base + 28); x.stroke();
+      x.beginPath(); x.moveTo(X(600), base - 32); x.lineTo(X(600), base + 28); x.stroke();
+      x.fillStyle = TINTA;
+      x.fillText('entrada', X(0) - 16, base + 40); x.fillText('saída', X(600) - 12, base + 40);
+      const dentro = f > 0 && tr < 600;
+      return `frente: <em>${f.toFixed(0)} m</em> · traseira: <em>${tr.toFixed(0)} m</em><br>` +
+        (tr >= 600 ? 'trem saiu por completo — <em>t = 40 s</em>'
+                   : dentro ? 'ainda há trem dentro do túnel' : 'trem ainda não entrou');
+    });
+    return;
+  }
+
+  /* ---- gráfico S x t com varredura ---- */
+  if(tipo === 'sxt'){
+    const p = cfg.pontos, tmax = p[p.length-1].t, smax = Math.max(...p.map(q=>q.S));
+    widget(host, 210, [{k:'t', rot:'tempo', min:0, max:tmax, passo:.1, v:tmax, fmt:v=>v.toFixed(1)+' s'}],
+    (x,w,h,e)=>{
+      const m = {e:32, b:26}, X = t => m.e + t/tmax * (w - m.e - 10), Y = s => (h - m.b) - s/smax * (h - m.b - 34);
+      eixos(x, w, h, m);
+      x.strokeStyle = '#CBD8D6'; x.lineWidth = 1;
+      x.beginPath(); x.moveTo(m.e, Y(smax)); x.lineTo(w - 8, Y(smax)); x.stroke();
+      x.fillStyle = TINTA; x.fillText(smax + ' m', 2, Y(smax) + 4); x.fillText('S', 2, 16); x.fillText('t (s)', w - 30, h - 8);
+      x.strokeStyle = '#CBD8D6'; x.lineWidth = 3;
+      x.beginPath(); p.forEach((q,i)=> i ? x.lineTo(X(q.t), Y(q.S)) : x.moveTo(X(q.t), Y(q.S))); x.stroke();
+      x.strokeStyle = CIANO; x.lineWidth = 3; x.beginPath(); x.moveTo(X(0), Y(p[0].S));
+      for(let t = 0; t <= e.t; t += .05) x.lineTo(X(t), Y(interp(p,'S',t)));
+      x.stroke();
+      const S = interp(p,'S',e.t);
+      x.fillStyle = LARANJA; x.beginPath(); x.arc(X(e.t), Y(S), 5, 0, 6.2832); x.fill();
+      let dist = 0, ant = p[0].S;
+      for(let t = 0; t <= e.t; t += .02){ const s = interp(p,'S',t); dist += Math.abs(s - ant); ant = s; }
+      const dt = .05, v = (interp(p,'S', Math.min(e.t+dt, tmax)) - interp(p,'S', Math.max(e.t-dt, 0))) / (2*dt);
+      return `posição: <em>${S.toFixed(1)} m</em> · velocidade: <em>${v.toFixed(1)} m/s</em><br>` +
+             `deslocamento: <em>${(S - p[0].S).toFixed(1)} m</em> · percorrido: <em>${dist.toFixed(1)} m</em>`;
+    });
+    return;
+  }
+
+  /* ---- gráfico v x t com área acumulada ---- */
+  if(tipo === 'vxt'){
+    const p = cfg.pontos, tmax = p[p.length-1].t;
+    const vmax = Math.max(...p.map(q=>Math.abs(q.v))), neg = p.some(q=>q.v < 0);
+    widget(host, 210, [{k:'t', rot:'tempo', min:0, max:tmax, passo:.1, v:tmax, fmt:v=>v.toFixed(1)+' s'}],
+    (x,w,h,e)=>{
+      const m = {e:34, b:26}, alt = h - m.b - 30;
+      const zero = neg ? 30 + alt/2 : h - m.b;
+      const X = t => m.e + t/tmax * (w - m.e - 10), Y = v => zero - v/vmax * (neg ? alt/2 : alt);
+      /* área acumulada */
+      for(let t = 0; t < e.t; t += .03){
+        const v = interp(p,'v',t);
+        x.fillStyle = v >= 0 ? '#F4B94266' : '#007EA733';
+        x.fillRect(X(t), Math.min(Y(v), zero), Math.max(1, X(t+.03)-X(t)), Math.abs(Y(v)-zero));
+      }
+      x.strokeStyle = TINTA; x.lineWidth = 1.5;
+      x.beginPath(); x.moveTo(m.e, 20); x.lineTo(m.e, h - m.b); x.stroke();
+      x.beginPath(); x.moveTo(m.e, zero); x.lineTo(w - 8, zero); x.stroke();
+      x.fillStyle = TINTA; x.fillText('v (m/s)', 2, 14); x.fillText('t (s)', w - 28, h - 8);
+      x.fillText(String(vmax), 6, Y(vmax) + 4);
+      if(neg) x.fillText('-' + vmax, 2, Y(-vmax) + 4);
+      x.strokeStyle = '#CBD8D6'; x.lineWidth = 3;
+      x.beginPath(); p.forEach((q,i)=> i ? x.lineTo(X(q.t), Y(q.v)) : x.moveTo(X(q.t), Y(q.v))); x.stroke();
+      x.strokeStyle = CIANO; x.lineWidth = 3; x.beginPath(); x.moveTo(X(0), Y(p[0].v));
+      for(let t = 0; t <= e.t; t += .05) x.lineTo(X(t), Y(interp(p,'v',t)));
+      x.stroke();
+      const v = interp(p,'v',e.t);
+      x.fillStyle = LARANJA; x.beginPath(); x.arc(X(e.t), Y(v), 5, 0, 6.2832); x.fill();
+      let desl = 0, dist = 0;
+      for(let t = 0; t < e.t; t += .005){ const u = interp(p,'v',t) * .005; desl += u; dist += Math.abs(u); }
+      return `velocidade: <em>${v.toFixed(1)} m/s</em><br>` +
+             `área com sinal (deslocamento): <em>${desl.toFixed(0)} m</em><br>` +
+             `área em módulo (distância): <em>${dist.toFixed(0)} m</em>`;
+    });
+    return;
+  }
+
+  /* ---- distância de parada ---- */
+  if(tipo === 'parada'){
+    widget(host, 150, [{k:'kmh', rot:'velocidade', min:20, max:140, passo:5, v:108, fmt:v=>v+' km/h'}],
+    (x,w,h,e)=>{
+      const v = e.kmh/3.6, d1 = v*0.8, d2 = v*v/12, tot = d1 + d2, esc = (w - 24) / 170;
+      const y = 52;
+      x.fillStyle = '#CBD8D6'; x.fillRect(12, y + 26, w - 24, 3);
+      x.fillStyle = AMARELO; x.fillRect(12, y, d1*esc, 22);
+      x.fillStyle = LARANJA; x.fillRect(12 + d1*esc, y, d2*esc, 22);
+      x.fillStyle = TINTA;
+      x.fillText('reação', 14, y - 6); x.fillText('frenagem', 16 + d1*esc, y - 6);
+      x.fillText('0', 10, y + 44); x.fillText('170 m', w - 40, y + 44);
+      x.fillStyle = TINTA; x.beginPath(); x.arc(12 + tot*esc, y + 11, 6, 0, 6.2832); x.fill();
+      return `reação (0,8 s): <em>${d1.toFixed(0)} m</em> · frenagem: <em>${d2.toFixed(0)} m</em><br>` +
+             `distância total: <em>${tot.toFixed(0)} m</em>`;
+    });
+    return;
+  }
+
+  /* ---- carro x moto no semáforo ---- */
+  if(tipo === 'perseguicao'){
+    widget(host, 210, [{k:'t', rot:'tempo', min:0, max:12, passo:.1, v:0, fmt:v=>v.toFixed(1)+' s'}],
+    (x,w,h,e)=>{
+      const Smax = 150, X = t => 34 + t/12 * (w - 44), Y = s => 150 - s/Smax * 118;
+      const Sc = e.t*e.t, Sm = 8*e.t;
+      x.strokeStyle = '#CBD8D6'; x.lineWidth = 1;
+      x.beginPath(); x.moveTo(34, 176); x.lineTo(w - 10, 176); x.stroke();
+      x.fillStyle = TINTA; x.fillText('pista', 4, 180);
+      x.fillStyle = LARANJA; x.beginPath(); x.arc(X(Sc/12.5), 170, 6, 0, 6.2832); x.fill();
+      x.fillStyle = CIANO; x.beginPath(); x.arc(X(Sm/12.5), 183, 6, 0, 6.2832); x.fill();
+      eixos(x, 0, 152, {e:34, b:2});
+      x.strokeStyle = TINTA; x.lineWidth = 1.5;
+      x.beginPath(); x.moveTo(34, 12); x.lineTo(34, 150); x.lineTo(w - 10, 150); x.stroke();
+      x.fillStyle = TINTA; x.fillText('S (m)', 2, 12);
+      x.strokeStyle = '#CBD8D6'; x.lineWidth = 2;
+      x.beginPath(); for(let t = 0; t <= 12; t += .1) t ? x.lineTo(X(t), Y(t*t)) : x.moveTo(X(0), Y(0)); x.stroke();
+      x.beginPath(); x.moveTo(X(0), Y(0)); x.lineTo(X(12), Y(96)); x.stroke();
+      x.strokeStyle = LARANJA; x.lineWidth = 3;
+      x.beginPath(); for(let t = 0; t <= e.t; t += .1) t ? x.lineTo(X(t), Y(t*t)) : x.moveTo(X(0), Y(0)); x.stroke();
+      x.strokeStyle = CIANO; x.lineWidth = 3;
+      x.beginPath(); x.moveTo(X(0), Y(0)); x.lineTo(X(e.t), Y(Sm)); x.stroke();
+      x.fillStyle = VERDE; x.beginPath(); x.arc(X(8), Y(64), 4, 0, 6.2832); x.fill();
+      return `carro: <em>${Sc.toFixed(0)} m</em> (v = ${(2*e.t).toFixed(0)} m/s) · moto: <em>${Sm.toFixed(0)} m</em><br>` +
+             (e.t < 8 ? `moto na frente por <em>${(Sm-Sc).toFixed(0)} m</em>`
+                      : e.t > 8 ? `carro na frente por <em>${(Sc-Sm).toFixed(0)} m</em>` : 'encontro — <em>t = 8 s, S = 64 m</em>');
+    });
+    return;
+  }
+
+  /* ---- lançamento oblíquo com muro ---- */
+  if(tipo === 'obliquo'){
+    widget(host, 200, [
+      {k:'ang', rot:'ângulo', min:15, max:75, passo:1, v:37, fmt:v=>v+'°'},
+      {k:'v0', rot:'v₀', min:30, max:60, passo:5, v:50, fmt:v=>v+' m/s'}],
+    (x,w,h,e)=>{
+      const g = 10, r = e.ang*Math.PI/180, vx = e.v0*Math.cos(r), vy = e.v0*Math.sin(r);
+      const T = 2*vy/g, alc = vx*T, hm = vy*vy/(2*g);
+      const EX_ = 380, EY = 110, X = m => 22 + m/EX_*(w-30), Y = m => h - 26 - m/EY*(h-46);
+      x.strokeStyle = TINTA; x.lineWidth = 1.5;
+      x.beginPath(); x.moveTo(18, h-26); x.lineTo(w-6, h-26); x.stroke();
+      x.fillStyle = '#CBD8D6'; x.fillRect(X(160)-3, Y(40), 6, Y(0)-Y(40));
+      x.strokeStyle = TINTA; x.lineWidth = 1; x.strokeRect(X(160)-3, Y(40), 6, Y(0)-Y(40));
+      x.fillStyle = TINTA; x.fillText('muro 40 m', X(160)-20, Y(40)-6);
+      x.strokeStyle = LARANJA; x.lineWidth = 2.5; x.beginPath();
+      for(let t = 0; t <= T; t += T/120){
+        const px = X(vx*t), py = Y(vy*t - 5*t*t);
+        t ? x.lineTo(px, py) : x.moveTo(px, py);
+      }
+      x.stroke();
+      const tm = 160/vx, ym = vy*tm - 5*tm*tm;
+      let msg;
+      if(alc < 160){ msg = `alcance de <em>${alc.toFixed(0)} m</em> — não chega ao muro`; }
+      else {
+        x.fillStyle = ym >= 40 ? VERDE : LARANJA;
+        x.beginPath(); x.arc(X(160), Y(Math.max(ym,0)), 5, 0, 6.2832); x.fill();
+        msg = `altura no muro: <em>${ym.toFixed(1)} m</em> — ${ym >= 40 ? 'passa' : 'bate no muro'}`;
+      }
+      return `alcance: <em>${alc.toFixed(0)} m</em> · altura máx.: <em>${hm.toFixed(0)} m</em><br>${msg}`;
+    });
+    return;
+  }
+
+  /* ---- travessia do rio ---- */
+  if(tipo === 'rio'){
+    widget(host, 200, [{k:'vc', rot:'correnteza', min:0, max:6, passo:.5, v:3, fmt:v=>v.toFixed(1)+' m/s'}],
+    (x,w,h,e)=>{
+      const L = 80, vb = 4, t = L/vb, der = e.vc*t, desl = Math.hypot(L, der);
+      const esc = Math.min((w-40)/160, (h-40)/100);
+      const X = d => 20 + d*esc, Y = l => h - 20 - l*esc;
+      x.fillStyle = '#007EA71a'; x.fillRect(14, Y(L), w-20, Y(0)-Y(L));
+      x.strokeStyle = TINTA; x.lineWidth = 1.5;
+      x.beginPath(); x.moveTo(14, Y(0)); x.lineTo(w-6, Y(0)); x.moveTo(14, Y(L)); x.lineTo(w-6, Y(L)); x.stroke();
+      x.fillStyle = TINTA; x.fillText('margem oposta', 18, Y(L)-6);
+      x.strokeStyle = LARANJA; x.lineWidth = 3;
+      x.beginPath(); x.moveTo(X(0), Y(0)); x.lineTo(X(der), Y(L)); x.stroke();
+      x.setLineDash([4,4]); x.strokeStyle = CIANO; x.lineWidth = 2;
+      x.beginPath(); x.moveTo(X(0), Y(0)); x.lineTo(X(0), Y(L)); x.lineTo(X(der), Y(L)); x.stroke(); x.setLineDash([]);
+      x.fillStyle = TINTA; x.beginPath(); x.arc(X(0), Y(0), 5, 0, 6.2832); x.fill();
+      x.fillStyle = LARANJA; x.beginPath(); x.arc(X(der), Y(L), 5, 0, 6.2832); x.fill();
+      return `tempo de travessia: <em>${t.toFixed(0)} s</em> (não muda com a correnteza)<br>` +
+             `deriva: <em>${der.toFixed(0)} m</em> · deslocamento: <em>${desl.toFixed(0)} m</em>`;
+    });
+    return;
+  }
+
+  /* ---- radar de velocidade média ---- */
+  if(tipo === 'radar'){
+    widget(host, 140, [{k:'min', rot:'tempo no trecho', min:6, max:14, passo:.5, v:8, fmt:v=>v.toFixed(1)+' min'}],
+    (x,w,h,e)=>{
+      const v = 12 / (e.min/60), esc = (w - 24)/140, y = 58;
+      x.fillStyle = '#CBD8D6'; x.fillRect(12, y, w - 24, 22);
+      x.fillStyle = v > 80 ? LARANJA : VERDE; x.fillRect(12, y, Math.min(v,140)*esc, 22);
+      x.strokeStyle = TINTA; x.lineWidth = 2;
+      x.beginPath(); x.moveTo(12 + 80*esc, y - 10); x.lineTo(12 + 80*esc, y + 32); x.stroke();
+      x.fillStyle = TINTA;
+      x.fillText('limite 80', 12 + 80*esc - 24, y - 15);
+      x.fillText('0', 10, y + 46); x.fillText('140 km/h', w - 58, y + 46);
+      return `velocidade média: <em>${v.toFixed(0)} km/h</em><br>` +
+        (v > 80 ? 'acima do limite — multa' : 'dentro do limite') +
+        `<br>tempo mínimo legal: <em>9,0 min</em>`;
+    });
+    return;
+  }
+
+  /* ---- ultrapassagem, no referencial do caminhão ---- */
+  if(tipo === 'ultrapassagem'){
+    widget(host, 150, [{k:'t', rot:'tempo', min:0, max:10, passo:.1, v:0, fmt:v=>v.toFixed(1)+' s'}],
+    (x,w,h,e)=>{
+      const esc = (w - 24)/90, X = m => 12 + m*esc, base = h/2;
+      x.strokeStyle = '#CBD8D6'; x.lineWidth = 2;
+      x.beginPath(); x.moveTo(8, base + 26); x.lineTo(w - 6, base + 26); x.stroke();
+      x.fillStyle = CIANO; x.fillRect(X(40), base - 6, 16*esc, 26);
+      x.fillStyle = TINTA; x.fillText('caminhão (parado neste referencial)', X(22), base - 14);
+      const tras = 26 + 5*e.t;
+      x.fillStyle = LARANJA; x.fillRect(X(tras), base + 4, 4*esc, 18);
+      const falta = Math.max(0, 8 - e.t);
+      return `avanço relativo: <em>${(5*e.t).toFixed(0)} m</em> de 40 m<br>` +
+        (falta > 0 ? `faltam <em>${falta.toFixed(1)} s</em>` : 'ultrapassagem concluída — <em>8,0 s</em>') +
+        `<br>no solo o carro já andou <em>${(25*e.t).toFixed(0)} m</em>`;
+    });
+    return;
+  }
+
+  /* ---- triângulo 3-4-5: comparação de percursos ---- */
+  if(tipo === 'triangulo'){
+    widget(host, 200, [{k:'x', rot:'percurso', min:0, max:1, passo:.01, v:0, fmt:v=>Math.round(v*100)+'%'}],
+    (x,w,h,e)=>{
+      const esc = Math.min((w-70)/4, (h-60)/3);
+      const A = {x:30, y:h-26}, C = {x:30, y:h-26-3*esc}, B = {x:30+4*esc, y:h-26-3*esc};
+      x.strokeStyle = '#CBD8D6'; x.lineWidth = 2;
+      x.beginPath(); x.moveTo(A.x,A.y); x.lineTo(C.x,C.y); x.lineTo(B.x,B.y); x.closePath(); x.stroke();
+      x.fillStyle = TINTA;
+      x.fillText('A', A.x-14, A.y+4); x.fillText('C', C.x-14, C.y+4); x.fillText('B', B.x+6, B.y+4);
+      x.fillText('3 km', A.x-26, (A.y+C.y)/2); x.fillText('4 km', (C.x+B.x)/2-12, C.y-8);
+      x.fillText('5 km', (A.x+B.x)/2, (A.y+B.y)/2+16);
+      /* percurso direto AB, em laranja */
+      x.strokeStyle = LARANJA; x.lineWidth = 3.5;
+      x.beginPath(); x.moveTo(A.x,A.y);
+      x.lineTo(A.x + (B.x-A.x)*e.x, A.y + (B.y-A.y)*e.x); x.stroke();
+      /* percurso ACB, em ciano */
+      x.strokeStyle = CIANO; x.lineWidth = 3.5;
+      const f = e.x * 7;
+      x.beginPath(); x.moveTo(A.x, A.y);
+      if(f <= 3){ x.lineTo(A.x, A.y - (f/3)*3*esc); }
+      else { x.lineTo(C.x, C.y); x.lineTo(C.x + ((f-3)/4)*4*esc, C.y); }
+      x.stroke();
+      const t = e.x * 20;
+      return `tempo decorrido: <em>${t.toFixed(1)} min</em> dos 20 min<br>` +
+        `direto AB: <em>${(e.x*5).toFixed(1)} km</em> a 15 km/h<br>` +
+        `por ACB: <em>${(e.x*7).toFixed(1)} km</em> a 21 km/h` +
+        (e.x >= .999 ? '<br>chegam <em>juntos</em>' : '');
+    });
+    return;
+  }
+
+  /* ---- dois móveis em MRUV: v x t e posições ---- */
+  if(tipo === 'duasretas'){
+    const c = cfg.cfg, tmax = c.tmax;
+    const posA = t => c.a.v0*t + c.a.a*t*t/2, posB = t => c.b.v0*t + c.b.a*t*t/2;
+    const velA = t => c.a.v0 + c.a.a*t, velB = t => c.b.v0 + c.b.a*t;
+    widget(host, 215, [{k:'t', rot:'tempo', min:0, max:tmax, passo:tmax/200, v:0, fmt:v=>v.toFixed(1)+' s'}],
+    (x,w,h,e)=>{
+      const vmax = Math.max(Math.abs(velA(0)), Math.abs(velA(tmax)), Math.abs(velB(0)), Math.abs(velB(tmax)));
+      const neg = Math.min(velA(0), velA(tmax), velB(0), velB(tmax)) < 0;
+      const m = {e:36}, alt = 150;
+      const zero = neg ? 20 + alt/2 : 20 + alt;
+      const X = t => m.e + t/tmax*(w - m.e - 12), Y = v => zero - v/vmax*(neg ? alt/2 : alt);
+      x.strokeStyle = TINTA; x.lineWidth = 1.5;
+      x.beginPath(); x.moveTo(m.e, 14); x.lineTo(m.e, 20+alt); x.stroke();
+      x.beginPath(); x.moveTo(m.e, zero); x.lineTo(w-10, zero); x.stroke();
+      x.fillStyle = TINTA; x.fillText('v (m/s)', 2, 12); x.fillText('t (s)', w-30, 20+alt+16);
+      x.fillText(String(Math.round(vmax)), 8, Y(vmax)+4);
+      [[velA, '#E4572E'], [velB, '#007EA7']].forEach(([f, cor2])=>{
+        x.strokeStyle = '#CBD8D6'; x.lineWidth = 2;
+        x.beginPath(); x.moveTo(X(0), Y(f(0))); x.lineTo(X(tmax), Y(f(tmax))); x.stroke();
+        x.strokeStyle = cor2; x.lineWidth = 3;
+        x.beginPath(); x.moveTo(X(0), Y(f(0))); x.lineTo(X(e.t), Y(f(e.t))); x.stroke();
+        x.fillStyle = cor2; x.beginPath(); x.arc(X(e.t), Y(f(e.t)), 5, 0, 6.2832); x.fill();
+      });
+      const sa = posA(e.t), sb = posB(e.t), d = Math.abs(sa - sb);
+      return `<span style="color:#E4572E">A</span>: v = <em>${velA(e.t).toFixed(1)}</em> m/s · S = <em>${sa.toFixed(0)}</em> m<br>` +
+        `<span style="color:#007EA7">B</span>: v = <em>${velB(e.t).toFixed(1)}</em> m/s · S = <em>${sb.toFixed(0)}</em> m<br>` +
+        (d < Math.max(1, tmax/200) && e.t > 0 ? 'mesma posição — <em>reencontro</em>' : `separação: <em>${d.toFixed(0)} m</em>`);
+    });
+    return;
+  }
+}
+
+const EX = [
+{n:1,nivel:"medio",tema:"Velocidade média · corrida",ref:"Unicamp 2013",
+ texto:"Para fins de registros de recordes mundiais, nas provas de 100 metros rasos não são consideradas as marcas em competições em que houver vento favorável (mesmo sentido do corredor) com velocidade superior a 2 m/s. Sabe-se que, com vento favorável de 2 m/s, o tempo necessário para a conclusão da prova é reduzido em 0,1 s. Se um velocista realiza a prova em 10 s sem vento, qual seria sua velocidade se o vento fosse favorável com velocidade de 2 m/s?",
+ alts:["8,0 m/s","9,9 m/s","10,1 m/s","12,0 m/s"],certa:2,
+ passos:["Sem vento, o atleta faz os 100 m em 10 s — velocidade média de <span class='f'>10 m/s</span>.",
+   "Com o vento favorável, o tempo cai 0,1 s: <span class='f'>10 − 0,1 = 9,9 s</span>.",
+   "A distância continua sendo 100 m: <span class='f'>v = 100/9,9 ≈ 10,1 m/s</span>.",
+   "Cuidado com a alternativa 12,0 m/s: a velocidade do vento <b>não se soma</b> à do corredor. O vento reduz o arrasto, e o efeito disso já está dado no enunciado como redução de tempo."],
+ resp:"10,1 m/s"},
+
+{n:2,nivel:"base",tema:"Conversão de unidades",ref:"IFSP 2013",
+ texto:"Embarcações marítimas navegam com velocidade medida em nós. Um nó equivale a uma milha por hora, ou seja, é a velocidade de um navio que percorre uma milha no intervalo de uma hora. Se um navio consegue adquirir, no máximo, 20 nós de velocidade constante, ele percorrerá durante uma viagem de 10 horas uma distância aproximada, em km, de (adote 1 milha = 1852 m):",
+ alts:["200","320","370","480","925"],certa:2,
+ passos:["Traduza a unidade: <span class='f'>20 nós = 20 milhas/h</span>.",
+   "Em milhas: <span class='f'>20 · 10 = 200 milhas</span>.",
+   "Converta: <span class='f'>200 · 1,852 km = 370,4 km ≈ 370 km</span>.",
+   "A alternativa 200 é a pegadinha — é o resultado sem a conversão de milha para quilômetro."],
+ resp:"≈ 370 km"},
+
+{n:3,nivel:"medio",tema:"Gráfico v × t · MRUV",ref:"UERN 2013",
+ inter:{tipo:'vxt', pontos:[{t:0,v:10},{t:8,v:-6}]},
+ texto:"O gráfico mostra a velocidade em função do tempo de um corpo em movimento retilíneo uniformemente variado: a velocidade parte de 10 m/s e se anula em t = 5 s, seguindo com a mesma taxa. Considerando a posição inicial desse movimento igual a 46 m, a posição do corpo no instante t = 8 s é:",
+ alts:["54 m","62 m","66 m","74 m"],certa:1,
+ passos:["Primeiro extraia a aceleração da inclinação: a velocidade cai de 10 m/s a 0 em 5 s, logo <span class='f'>a = −2 m/s²</span>.",
+   "Função horária: <span class='f'>S = 46 + 10t − t²</span>.",
+   "Em <span class='f'>t = 8 s</span>: <span class='f'>S = 46 + 80 − 64 = 62 m</span>.",
+   "Pelo gráfico dá no mesmo: a área positiva (0 a 5 s) vale <span class='f'>+25 m</span> e a negativa (5 a 8 s) vale <span class='f'>−9 m</span>, somando <span class='f'>+16 m</span> ao ponto de partida.",
+   "Varra o controle e observe: o corpo avança, para em t = 5 s e começa a voltar."],
+ resp:"62 m"},
+
+{n:4,nivel:"dificil",tema:"Perseguição · MRU × MRUV",ref:"EsPCEx (AMAN) 2013",
+ texto:"Um carro desenvolve velocidade constante de 72 km/h em uma rodovia federal. Ele passa por um trecho em obras, onde a velocidade máxima permitida é de 60 km/h. Após 5 s da passagem do carro, uma viatura policial inicia a perseguição, partindo do repouso e desenvolvendo aceleração constante. A viatura se desloca 2,1 km até alcançar o carro do infrator. Nesse momento, a viatura policial atinge a velocidade de:",
+ alts:["20 m/s","24 m/s","30 m/s","38 m/s","42 m/s"],certa:4,
+ passos:["<span class='f'>72 ÷ 3,6 = 20 m/s</span> e <span class='f'>2,1 km = 2100 m</span>.",
+   "Alcançar significa estar na mesma posição, então o carro também percorreu 2100 m: <span class='f'>t<sub>carro</sub> = 2100/20 = 105 s</span>.",
+   "A viatura saiu 5 s depois, logo esteve em movimento por <span class='f'>100 s</span>.",
+   "Da equação horária da viatura: <span class='f'>2100 = a·100²/2</span> → <span class='f'>a = 0,42 m/s²</span>.",
+   "<span class='f'>v = a·t = 0,42 · 100 = 42 m/s</span> — cerca de 151 km/h.",
+   "Atalho útil: em MRUV partindo do repouso, a velocidade final é o dobro da média. Aqui a média foi <span class='f'>2100/100 = 21 m/s</span>, então a final é <span class='f'>42 m/s</span>."],
+ resp:"42 m/s"},
+
+{n:5,nivel:"medio",tema:"Frenagem · Torricelli",ref:"ENEM PPL 2013",
+ texto:"O trem de passageiros da Estrada de Ferro Vitória-Minas está utilizando uma nova tecnologia de frenagem eletrônica. Com a tecnologia anterior, era preciso iniciar a frenagem cerca de 400 metros antes da estação. Atualmente, essa distância caiu para 250 metros, o que proporciona redução no tempo de viagem. Considerando uma velocidade de 72 km/h, qual o módulo da diferença entre as acelerações de frenagem depois e antes da adoção dessa tecnologia?",
+ alts:["0,08 m/s²","0,30 m/s²","1,10 m/s²","1,60 m/s²"],certa:1,
+ passos:["<span class='f'>72 ÷ 3,6 = 20 m/s</span>.",
+   "O tempo não aparece nos dados, então é Torricelli: <span class='f'>0 = v₀² − 2aΔS</span> → <span class='f'>a = v₀²/(2ΔS)</span>.",
+   "Tecnologia antiga: <span class='f'>a = 400/800 = 0,5 m/s²</span>.",
+   "Tecnologia nova: <span class='f'>a = 400/500 = 0,8 m/s²</span>.",
+   "Diferença: <span class='f'>0,8 − 0,5 = 0,3 m/s²</span>.",
+   "Faz sentido físico: parar na mesma velocidade em menos espaço exige freio mais forte."],
+ resp:"0,30 m/s²"},
+
+{n:6,nivel:"medio",tema:"Movimento relativo · rio",ref:"Unicamp 2012",
+ texto:"O transporte fluvial de cargas é pouco explorado no Brasil, considerando-se nosso vasto conjunto de rios navegáveis. Uma embarcação navega a uma velocidade de 26 nós, medida em relação à água do rio (use 1 nó = 0,5 m/s). A correnteza do rio tem velocidade aproximadamente constante de 5,0 m/s em relação às margens. Qual é o tempo aproximado de viagem entre duas cidades separadas por uma extensão de 40 km de rio, se o barco navega rio acima, ou seja, contra a correnteza?",
+ alts:["2 horas e 13 minutos","1 hora e 23 minutos","51 minutos","37 minutos"],certa:1,
+ passos:["Velocidade do barco em relação à água: <span class='f'>26 · 0,5 = 13 m/s</span>.",
+   "Rio acima, a correnteza subtrai: <span class='f'>v = 13 − 5,0 = 8,0 m/s</span> em relação às margens.",
+   "<span class='f'>t = 40000/8,0 = 5000 s</span>.",
+   "Convertendo: <span class='f'>5000/60 ≈ 83 min = 1 h 23 min</span>.",
+   "Rio abaixo seriam 18 m/s e pouco mais de 37 min — a alternativa D é exatamente essa armadilha."],
+ resp:"1 hora e 23 minutos"},
+
+{n:7,nivel:"medio",tema:"Comparação de percursos",ref:"UESPI 2012",
+ inter:{tipo:'triangulo'},
+ texto:"Um motorista deseja ir do ponto A ao ponto B de uma grande cidade. O triângulo ABC é retângulo, com os catetos AC e CB de comprimentos 3 km e 4 km, respectivamente. O Departamento de Trânsito informa que as velocidades médias nos trechos AB e ACB valem 15 km/h e 21 km/h. Nessa situação, podemos concluir que o motorista:",
+ alts:["chegará 20 min mais cedo se for pelo caminho direto AB","chegará 10 min mais cedo se for pelo caminho direto AB","gastará o mesmo tempo para ir pelo percurso AB ou pelo percurso ACB","chegará 10 min mais cedo se for pelo caminho ACB","chegará 20 min mais cedo se for pelo caminho ACB"],certa:2,
+ passos:["A hipotenusa sai do triângulo 3-4-5: <span class='f'>AB = 5 km</span>.",
+   "Caminho direto: <span class='f'>t = 5/15 = 1/3 h = 20 min</span>.",
+   "Caminho pelos catetos: <span class='f'>AC + CB = 3 + 4 = 7 km</span>, a 21 km/h → <span class='f'>t = 7/21 = 1/3 h = 20 min</span>.",
+   "Os dois tempos são iguais. O caminho mais longo é compensado exatamente pela velocidade maior.",
+   "A questão pune quem responde por intuição: o percurso mais curto nem sempre é o mais rápido."],
+ resp:"Mesmo tempo pelos dois caminhos — 20 min"},
+
+{n:8,nivel:"base",tema:"Composição de deslocamentos",ref:"Unisinos 2012",
+ texto:"Duas pessoas partem do mesmo ponto e correm em linha reta, uma no sentido norte e outra no sentido oeste. Sabendo-se que a velocidade de uma delas é de 8 km/h e que a da outra é de 6 km/h, qual a distância (em km) entre elas após 1 hora de corrida?",
+ alts:["2","10","14","24","48"],certa:1,
+ passos:["Em 1 hora, uma percorre <span class='f'>8 km</span> e a outra <span class='f'>6 km</span>.",
+   "Norte e oeste são direções perpendiculares, então os deslocamentos formam os catetos de um triângulo retângulo.",
+   "<span class='f'>d = √(8² + 6²) = √100 = 10 km</span>.",
+   "Somar 8 + 6 = 14 seria correto apenas se corressem em sentidos opostos na mesma reta."],
+ resp:"10 km"},
+
+{n:9,nivel:"medio",tema:"MRU × MRUV · quem chega antes",ref:"PUC-RJ 2012",
+ texto:"Duas crianças disputam um saco de balas que se situa exatamente na metade da distância entre elas, ou seja, d/2, onde d = 20 m. A criança (P) corre com velocidade constante de 4,0 m/s. A criança (Q) começa do repouso com aceleração constante a = 2,0 m/s². Qual a afirmação verdadeira?",
+ alts:["(P) chega primeiro, mas a velocidade de (Q) nesse instante é maior","(Q) chega primeiro, mas a velocidade de (P) nesse instante é maior","(P) chega primeiro, mas as velocidades são iguais nesse instante","(Q) chega primeiro, mas as velocidades são iguais nesse instante","(P) e (Q) chegam ao mesmo tempo, com velocidades iguais"],certa:0,
+ passos:["Cada criança precisa percorrer <span class='f'>d/2 = 10 m</span>.",
+   "Criança P, movimento uniforme: <span class='f'>t = 10/4,0 = 2,5 s</span>.",
+   "Criança Q, do repouso: <span class='f'>10 = ½·2,0·t²</span> → <span class='f'>t² = 10</span> → <span class='f'>t ≈ 3,2 s</span>. P chega primeiro.",
+   "Velocidade de Q ao chegar: <span class='f'>v = 2,0 · 3,2 = 6,3 m/s</span>, maior que os 4,0 m/s de P.",
+   "Repare no que a questão explora: chegar depois não significa estar mais devagar. Q perde a corrida e ainda assim cruza a linha mais rápida."],
+ resp:"P chega primeiro, mas Q chega com velocidade maior"},
+
+{n:10,nivel:"dificil",tema:"Encontro com partida atrasada",ref:"EPCAR (AFA) 2011",
+ texto:"Dois automóveis A e B encontram-se estacionados paralelamente ao marco zero de uma estrada. Em um dado instante, o automóvel A parte, movimentando-se com velocidade escalar constante de 80 km/h. Depois de certo intervalo de tempo Δt, o automóvel B parte no encalço de A com velocidade escalar constante de 100 km/h. Após 2 h de viagem, o motorista de A verifica que B se encontra 10 km atrás. O intervalo Δt em que o motorista B ainda permaneceu estacionado, em horas, é igual a:",
+ alts:["0,25","0,50","1,00","4,00"],certa:1,
+ passos:["Em 2 h de viagem, A percorreu <span class='f'>80 · 2 = 160 km</span>.",
+   "B está 10 km atrás de A, então B percorreu <span class='f'>160 − 10 = 150 km</span>.",
+   "A 100 km/h, esses 150 km exigem <span class='f'>150/100 = 1,5 h</span> de movimento.",
+   "Como o relógio total é de 2 h, B ficou parado <span class='f'>2 − 1,5 = 0,5 h</span>.",
+   "Ponto de atenção: as 2 h são contadas a partir da partida de A, não da de B."],
+ resp:"Δt = 0,50 h"},
+
+{n:11,nivel:"dificil",tema:"Semáforo · MRUV com decisão",ref:"IFSP 2011",
+ texto:"Numa determinada avenida onde a velocidade máxima permitida é de 60 km/h, um motorista dirigindo a 54 km/h vê que o semáforo, distante 63 metros, fica amarelo e decide não parar. Sabendo-se que o sinal amarelo permanece aceso durante 3 segundos aproximadamente, esse motorista, se não quiser passar no sinal vermelho, deverá imprimir ao veículo uma aceleração mínima de ______ m/s². O resultado é que esse motorista ______ multado, pois ______ a velocidade máxima.",
+ alts:["1,4 – não será – não ultrapassará","4,0 – não será – não ultrapassará","10 – não será – não ultrapassará","4,0 – será – ultrapassará","10 – será – ultrapassará"],certa:3,
+ passos:["<span class='f'>54 ÷ 3,6 = 15 m/s</span>.",
+   "Ele precisa vencer 63 m em 3 s: <span class='f'>63 = 15·3 + a·3²/2</span> → <span class='f'>63 = 45 + 4,5a</span> → <span class='f'>a = 4,0 m/s²</span>.",
+   "Agora a segunda parte, que muita gente esquece: com que velocidade ele cruza o cruzamento? <span class='f'>v = 15 + 4,0·3 = 27 m/s</span>.",
+   "Convertendo: <span class='f'>27 · 3,6 = 97,2 km/h</span>, bem acima dos 60 km/h permitidos.",
+   "Ou seja, ele consegue passar antes do vermelho — e leva multa por excesso de velocidade. A questão tem duas respostas embutidas, e a conta fácil resolve só a primeira."],
+ resp:"4,0 m/s² — será multado, pois ultrapassará o limite"},
+
+{n:12,nivel:"dificil",tema:"Gráfico v × t · reencontro",ref:"EPCAR (AFA) 2011",
+ inter:{tipo:'duasretas', cfg:{a:{v0:50, a:-0.2}, b:{v0:-50, a:0.2}, tmax:600, esc:'grande'}},
+ texto:"Duas partículas, A e B, que executam movimentos retilíneos uniformemente variados, se encontram em t = 0 na mesma posição. Nesse instante, A tem velocidade +50 m/s e B tem velocidade −50 m/s, e ambas sofrem acelerações de mesmo módulo igual a 0,2 m/s² (A freando, B acelerando no sentido positivo). Com base nesses dados, essas partículas se encontrarão novamente no instante:",
+ alts:["10 s","50 s","100 s","500 s"],certa:3,
+ passos:["Escreva as funções horárias com origem comum: <span class='f'>S<sub>A</sub> = 50t − 0,1t²</span> e <span class='f'>S<sub>B</sub> = −50t + 0,1t²</span>.",
+   "Reencontro significa <span class='f'>S<sub>A</sub> = S<sub>B</sub></span>: <span class='f'>50t − 0,1t² = −50t + 0,1t²</span>.",
+   "Reorganizando: <span class='f'>100t = 0,2t²</span> → <span class='f'>t = 100/0,2 = 500 s</span>.",
+   "Confira pela simetria: em 250 s cada uma inverte o sentido (a velocidade zera), e a partir daí refaz o caminho de volta. O reencontro acontece no dobro desse tempo, exatamente no ponto de partida.",
+   "Varra o controle e acompanhe as duas posições — elas se afastam, param e voltam a coincidir."],
+ resp:"500 s, de volta ao ponto de partida"},
+
+{n:13,nivel:"base",tema:"Composição vetorial · trajetória",ref:"PUC-RJ 2010",
+ texto:"Um pássaro voa em linha reta do ponto A, no solo, ao ponto B, em uma montanha, que dista 400 m do ponto A ao longo da horizontal. O ponto B se encontra também a uma altura de 300 m em relação ao solo. Dado que a velocidade do pássaro é de 20 m/s, o intervalo de tempo que ele leva para percorrer a distância de A a B é de:",
+ alts:["20 s","25 s","35 s","40 s","10 s"],certa:1,
+ passos:["A trajetória é a hipotenusa: <span class='f'>d = √(400² + 300²) = √250000 = 500 m</span>.",
+   "Outro triângulo 3-4-5 — vale reconhecer o padrão de cara.",
+   "<span class='f'>t = 500/20 = 25 s</span>.",
+   "O dado de g = 10 m/s² que a prova fornece é distrator: o pássaro voa em linha reta com velocidade constante, não está em queda."],
+ resp:"25 s"},
+
+{n:14,nivel:"base",tema:"Velocidade do som",ref:"PUC-RJ 2010",
+ texto:"O tempo entre observarmos um raio e escutarmos o som emitido por ele pode ser utilizado para determinar a distância entre o observador e a posição onde caiu o raio. Se levarmos 3 s para escutar o trovão, é correto afirmar que o raio caiu a (considere a velocidade do som no ar como 340 m/s):",
+ alts:["340 m","680 m","1020 m","1360 m","1700 m"],certa:2,
+ passos:["A luz chega praticamente no instante do raio — a 300.000 km/s, o atraso dela é desprezível.",
+   "Logo, os 3 s medidos são o tempo de viagem do som.",
+   "<span class='f'>d = 340 · 3 = 1020 m</span>.",
+   "Regra prática que vale contar em sala: cada 3 s entre o clarão e o trovão corresponde a cerca de 1 km de distância."],
+ resp:"1020 m"},
+
+{n:15,nivel:"base",tema:"Unidades de tempo",ref:"PUC-RJ 2010",
+ texto:"Uma tartaruga caminha, em linha reta, a 40 metros/hora, por um tempo de 15 minutos. Qual a distância percorrida?",
+ alts:["30 m","10 km","25 m","1 km","10 m"],certa:4,
+ passos:["A velocidade está em metros por hora e o tempo em minutos — é preciso uniformizar.",
+   "<span class='f'>15 min = 0,25 h</span>.",
+   "<span class='f'>d = 40 · 0,25 = 10 m</span>.",
+   "Questão simples que só cobra atenção à unidade. Quem multiplica 40 por 15 direto encontra 600 e não acha alternativa."],
+ resp:"10 m"},
+
+{n:16,nivel:"base",tema:"Escalas astronômicas",ref:"UFPR 2010",
+ texto:"A distância média da Terra ao Sol é de 150 milhões de km, ou 1 UA (unidade astronômica). Supondo que fosse possível desligar a luz proveniente do Sol, ligando-se em seguida, e considerando a velocidade da luz como 300 mil km por segundo, o tempo que essa luz levaria para atingir a Terra seria aproximadamente de:",
+ alts:["12,7 min","6,5 min","10,8 min","20 min","8,4 min"],certa:4,
+ passos:["<span class='f'>t = 150.000.000 / 300.000 = 500 s</span>.",
+   "<span class='f'>500/60 ≈ 8,3 min</span>, que arredonda para a alternativa de 8,4 min.",
+   "Vale o comentário em sala: olhar para o Sol é olhar para oito minutos atrás. Para estrelas distantes, o atraso é de anos."],
+ resp:"≈ 8,3 min (alternativa 8,4 min)"},
+
+{n:17,nivel:"medio",tema:"Movimento relativo · corpos extensos",ref:"UDESC 2010",
+ texto:"Dois caminhões deslocam-se com velocidade uniforme, em sentidos contrários, numa rodovia de mão dupla. A velocidade do primeiro caminhão e a do segundo, em relação à rodovia, são iguais a 40 km/h e 50 km/h, respectivamente. Um caroneiro, no primeiro caminhão, verificou que o segundo caminhão levou apenas 1,0 s para passar por ele. O comprimento do segundo caminhão e a velocidade dele em relação ao caroneiro são, respectivamente, iguais a:",
+ alts:["25 m e 90 km/h","2,8 m e 10 km/h","4,0 m e 25 m/s","28 m e 10 m/s","14 m e 50 km/h"],certa:0,
+ passos:["Sentidos opostos: as velocidades se somam. <span class='f'>v<sub>rel</sub> = 40 + 50 = 90 km/h</span>.",
+   "Em unidades do SI: <span class='f'>90 ÷ 3,6 = 25 m/s</span>.",
+   "No referencial do caroneiro, o que passa por ele em 1,0 s é o comprimento inteiro do caminhão: <span class='f'>L = 25 · 1,0 = 25 m</span>.",
+   "Se os sentidos fossem iguais, a relativa seria 10 km/h e a ultrapassagem levaria muito mais tempo — é a alternativa B, plantada justamente para quem subtrai."],
+ resp:"25 m de comprimento, a 90 km/h relativos"},
+
+{n:18,nivel:"medio",tema:"Encontro em sentidos opostos",ref:"UERJ 2010",
+ texto:"Dois automóveis, M e N, inicialmente a 50 km de distância um do outro, deslocam-se com velocidades constantes na mesma direção e em sentidos opostos. O valor da velocidade de M, em relação a um ponto fixo da estrada, é igual a 60 km/h. Após 30 minutos, os automóveis cruzam uma mesma linha da estrada. Em relação a um ponto fixo da estrada, a velocidade de N tem o seguinte valor, em quilômetros por hora:",
+ alts:["40","50","60","70"],certa:0,
+ passos:["Cruzar a mesma linha ao mesmo tempo significa que, juntos, eles fecharam os 50 km de separação.",
+   "Em <span class='f'>30 min = 0,5 h</span>, M percorreu <span class='f'>60 · 0,5 = 30 km</span>.",
+   "Sobram <span class='f'>50 − 30 = 20 km</span> para N no mesmo intervalo.",
+   "<span class='f'>v<sub>N</sub> = 20/0,5 = 40 km/h</span>.",
+   "Atalho: a velocidade de aproximação é <span class='f'>50/0,5 = 100 km/h</span>, e como as velocidades se somam em sentidos opostos, <span class='f'>100 − 60 = 40 km/h</span>."],
+ resp:"40 km/h"},
+
+{n:19,nivel:"medio",tema:"Movimento relativo · barco e correnteza",ref:"UFPR 2010",
+ texto:"Segundo Galileu Galilei, todos os movimentos descritos na cinemática são observados na natureza na forma de composição de movimentos. Assim, se um pequeno barco sobe o rio Guaraguaçu, em Pontal do Paraná, com velocidade de 12 km/h e desce o mesmo rio com velocidade de 20 km/h, a velocidade própria do barco e a velocidade da correnteza serão, respectivamente:",
+ alts:["18 km/h e 2 km/h","17 km/h e 3 km/h","16 km/h e 4 km/h","15 km/h e 5 km/h","19 km/h e 1 km/h"],certa:2,
+ passos:["Monte o sistema. Subindo, a correnteza atrapalha: <span class='f'>v<sub>b</sub> − v<sub>c</sub> = 12</span>. Descendo, ajuda: <span class='f'>v<sub>b</sub> + v<sub>c</sub> = 20</span>.",
+   "Somando as duas equações: <span class='f'>2v<sub>b</sub> = 32</span> → <span class='f'>v<sub>b</sub> = 16 km/h</span>.",
+   "Subtraindo: <span class='f'>2v<sub>c</sub> = 8</span> → <span class='f'>v<sub>c</sub> = 4 km/h</span>.",
+   "Confirme sempre nas duas: <span class='f'>16 − 4 = 12</span> e <span class='f'>16 + 4 = 20</span>. Bate.",
+   "Padrão que vale guardar: a velocidade própria é a média das duas medidas, e a da correnteza é a metade da diferença."],
+ resp:"Barco a 16 km/h, correnteza a 4 km/h"},
+
+{n:20,nivel:"dificil",tema:"Gráfico v × t · dois móveis",ref:"UNEMAT 2010",
+ inter:{tipo:'duasretas', cfg:{a:{v0:0, a:5, rot:'A'}, b:{v0:10, a:0, rot:'B'}, tmax:8}},
+ texto:"O gráfico da velocidade em função do tempo mostra dois carros A e B em movimento retilíneo: A parte do repouso e sua velocidade cresce uniformemente, passando por 10 m/s em t = 2,0 s, 20 m/s em t = 4,0 s e 30 m/s em t = 6,0 s; B mantém velocidade constante de 10 m/s. Em t = 0 s os carros estão na mesma posição. Com base na análise do gráfico, é correto afirmar:",
+ alts:["Os carros vão estar na mesma posição nos instantes t = 0 s e t = 4,0 s","Os carros não vão se encontrar após t = 0, porque a velocidade de A é maior que a do carro B","Os carros vão se encontrar novamente na posição S = 10 m","Os carros não vão se encontrar, porque estão em sentidos contrários","Os instantes em que os carros vão estar na mesma posição são t = 0 s e t = 8,0 s"],certa:0,
+ passos:["Extraia a aceleração de A pela inclinação: <span class='f'>a = 10/2,0 = 5,0 m/s²</span>.",
+   "Funções horárias, mesma origem: <span class='f'>S<sub>A</sub> = 2,5t²</span> e <span class='f'>S<sub>B</sub> = 10t</span>.",
+   "Encontro: <span class='f'>2,5t² = 10t</span> → <span class='f'>t(2,5t − 10) = 0</span> → <span class='f'>t = 0</span> ou <span class='f'>t = 4,0 s</span>.",
+   "A posição do reencontro é <span class='f'>S = 10 · 4,0 = 40 m</span>, e não 10 m — o que elimina a alternativa C.",
+   "Cuidado com a alternativa B: até 2,0 s o carro A é <b>mais lento</b> que B. Só depois disso ele passa a ganhar terreno."],
+ resp:"Mesma posição em t = 0 e t = 4,0 s (a 40 m da largada)"},
+
+{n:21,nivel:"base",tema:"Frenagem",ref:"UFPR 2010",
+ texto:"Um motorista conduz seu automóvel pela BR-277 a uma velocidade de 108 km/h quando avista uma barreira na estrada, sendo obrigado a frear (desaceleração de 5 m/s²) e parar o veículo após certo tempo. Pode-se afirmar que o tempo e a distância de frenagem serão, respectivamente:",
+ alts:["6 s e 90 m","10 s e 120 m","6 s e 80 m","10 s e 200 m","6 s e 120 m"],certa:0,
+ passos:["<span class='f'>108 ÷ 3,6 = 30 m/s</span>.",
+   "Tempo, pela equação da velocidade: <span class='f'>0 = 30 − 5t</span> → <span class='f'>t = 6,0 s</span>.",
+   "Distância, por Torricelli: <span class='f'>0 = 30² − 2·5·d</span> → <span class='f'>d = 900/10 = 90 m</span>.",
+   "Verificação rápida: em MRUV até parar, a distância é a velocidade média vezes o tempo — <span class='f'>15 · 6 = 90 m</span>. Bate."],
+ resp:"6 s e 90 m"},
+
+{n:22,nivel:"dificil",tema:"Movimento em três fases",ref:"PUC-RJ 2010",
+ texto:"Em geral, após o disparo e acelerando de maneira constante, um bom corredor de 100 m rasos atinge a velocidade máxima de 12,0 m/s a 36,0 m do ponto de partida. Essa velocidade é mantida por 3,0 s. A partir desse ponto, o corredor desacelera, também de maneira constante, com a = −0,5 m/s², completando a prova em aproximadamente 10 s. A aceleração nos primeiros 36,0 m, a distância percorrida nos 3,0 s seguintes e a velocidade final ao cruzar a linha de chegada são, respectivamente:",
+ alts:["2,0 m/s²; 36,0 m; 10,8 m/s","2,0 m/s²; 38,0 m; 21,6 m/s","2,0 m/s²; 72,0 m; 32,4 m/s","4,0 m/s²; 36,0 m; 10,8 m/s","4,0 m/s²; 38,0 m; 21,6 m/s"],certa:0,
+ passos:["<b>Fase 1</b>, por Torricelli: <span class='f'>12² = 2a·36</span> → <span class='f'>a = 144/72 = 2,0 m/s²</span>.",
+   "<b>Fase 2</b>, velocidade constante: <span class='f'>d = 12,0 · 3,0 = 36,0 m</span>. Acumulado: <span class='f'>72 m</span>.",
+   "<b>Fase 3</b>: faltam <span class='f'>100 − 72 = 28 m</span>, desacelerando. Por Torricelli: <span class='f'>v² = 12² − 2·0,5·28 = 144 − 28 = 116</span>.",
+   "<span class='f'>v = √116 ≈ 10,8 m/s</span>.",
+   "Estratégia geral: quando o movimento tem fases distintas, resolva uma de cada vez e leve adiante a velocidade final de cada trecho como velocidade inicial do seguinte."],
+ resp:"2,0 m/s²; 36,0 m; ≈ 10,8 m/s"},
+
+{n:23,nivel:"base",tema:"MRUV · Torricelli",ref:"PUC-RJ 2010",
+ texto:"Um corredor olímpico de 100 metros rasos acelera desde a largada, com aceleração constante, até atingir a linha de chegada, por onde ele passará com velocidade instantânea de 12 m/s no instante final. Qual a sua aceleração constante?",
+ alts:["10,0 m/s²","1,0 m/s²","1,66 m/s²","0,72 m/s²","2,0 m/s²"],certa:3,
+ passos:["Os dados são velocidade inicial (zero), velocidade final e distância — sem tempo. É Torricelli.",
+   "<span class='f'>12² = 0 + 2a·100</span> → <span class='f'>144 = 200a</span> → <span class='f'>a = 0,72 m/s²</span>.",
+   "Comparando com a questão anterior: aqui o modelo supõe aceleração durante os 100 m inteiros, o que é uma simplificação. Corredores reais atingem a velocidade máxima por volta dos 40 m e depois a mantêm.",
+   "Vale usar as duas questões juntas em sala para discutir o quanto um modelo simples se afasta do movimento real."],
+ resp:"0,72 m/s²"}
+];
+
+const palco = document.getElementById('palco');
+const letras = ['a','b','c','d','e'];
+
+EX.forEach(e=>{
+  const s = document.createElement('section');
+  s.className = 'slide';
+  s.innerHTML = `
+    <div class="ex-topo">
+      <div class="eyebrow" style="margin:0">Questão ${String(e.n).padStart(2,'0')} · ${e.tema}</div>
+      <span class="nivel ${e.nivel}">${e.nivel==='base'?'base':e.nivel==='medio'?'intermediária':'desafio'}</span>
+      ${e.ref?`<span class="fonte">${e.ref}</span>`:''}
+    </div>
+    <div class="ex-corpo ${(e.fig||e.inter)?'':'solo'}">
+      <div>
+        <p class="enunciado">${e.texto}</p>
+        <ul class="alts">
+          ${e.alts.map((a,i)=>`<li><button data-i="${i}"><span class="letra">${letras[i]})</span><span>${a}</span></button></li>`).join('')}
+        </ul>
+        <div class="acoes">
+          <button class="btn js-res">Mostrar resolução</button>
+          <button class="btn vazio js-limpa">Limpar respostas</button>
+        </div>
+        <div class="resolucao">
+          <h4>Resolução passo a passo</h4>
+          <ol>${e.passos.map(p=>`<li>${p}</li>`).join('')}</ol>
+          <div class="resposta">${e.resp}</div>
+        </div>
+      </div>
+      ${e.fig?`<div class="figura">${e.fig}</div>`:''}
+      ${e.inter?`<div class="figura inter"></div>`:''}
+    </div>`;
+
+  if(e.inter) montaInter(s.querySelector('.inter'), e.inter);
+
+  const res = s.querySelector('.resolucao');
+  s.querySelector('.js-res').addEventListener('click', ev=>{
+    res.classList.toggle('on');
+    ev.currentTarget.textContent = res.classList.contains('on') ? 'Ocultar resolução' : 'Mostrar resolução';
+  });
+  s.querySelector('.js-limpa').addEventListener('click', ()=>{
+    s.querySelectorAll('.alts button').forEach(b=>b.classList.remove('certa','errada'));
+  });
+  s.querySelectorAll('.alts button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const i = +b.dataset.i;
+      b.classList.add(i===e.certa ? 'certa' : 'errada');
+      if(i!==e.certa) s.querySelector(`.alts button[data-i="${e.certa}"]`).classList.add('certa');
+    });
+  });
+  palco.appendChild(s);
+});
+
+// gabarito
+const gab = document.createElement('section');
+gab.className='slide';
+gab.innerHTML = `
+  <div class="eyebrow">Fechamento</div>
+  <h2>Gabarito</h2>
+  <div class="gab">${EX.map(e=>`<div><span>${String(e.n).padStart(2,'0')}</span><strong>${letras[e.certa]}</strong></div>`).join('')}</div>
+  <p class="dica">Se sobrar tempo, o melhor uso dos últimos minutos é pedir que a turma reescreva, com as próprias palavras,
+  as duas frases que resolvem a maior parte das questões de gráfico: <b>inclinação é taxa de variação</b> e <b>área é acúmulo</b>.
+  Em ondulatória e em eletricidade essas duas ideias voltam exatamente iguais.</p>`;
+palco.appendChild(gab);
+
+// slide de fechamento
+const fonte = document.createElement('section');
+fonte.className = 'slide';
+fonte.innerHTML = `
+  <div class="eyebrow">Fechamento</div>
+  <h2>O que levar desta lista</h2>
+  <div class="duplo">
+    <div class="painel">
+      <h3>O roteiro que resolveu quase tudo</h3>
+      <ol class="passos">
+        <li><b>Uniformize as unidades</b> antes de qualquer conta. Metade dos erros morre aqui.</li>
+        <li><b>Identifique o referencial.</b> Se há dois móveis, pergunte-se: em relação a quê?</li>
+        <li><b>Escolha a equação pelo dado que falta.</b> Sem tempo nos dados, Torricelli.</li>
+        <li><b>Releia o enunciado no fim.</b> Várias dessas questões pedem duas grandezas, não uma.</li>
+      </ol>
+    </div>
+    <div class="painel">
+      <h3>Sobre as fontes</h3>
+      <p style="font-size:14.5px;line-height:1.6;margin:0">Cada questão traz a banca e o ano no cabeçalho.
+      As resoluções passo a passo foram escritas para esta aula.</p>
+      <p style="font-size:14.5px;line-height:1.6;margin:12px 0 0">Para conferir enunciados originais ou montar
+      novas listas, use os arquivos oficiais: as provas do <b>ENEM</b> ficam no site do INEP, e as dos
+      vestibulares estaduais nos sites das próprias instituições.</p>
+    </div>
+  </div>`;
+palco.appendChild(fonte);
+
+// navegação
+const slides = [...document.querySelectorAll('.slide')];
+const estrobo = document.getElementById('estrobo');
+const contador = document.getElementById('contador');
+document.getElementById('total').textContent = String(slides.length).padStart(2,'0');
+let atual = 0;
+
+slides.forEach((_,i)=>{
+  const b = document.createElement('button');
+  b.className='bola'; b.type='button';
+  b.setAttribute('aria-label','Ir para o slide '+(i+1));
+  b.addEventListener('click',()=>ir(i));
+  estrobo.appendChild(b);
+});
+
+function ir(i){
+  atual = Math.max(0, Math.min(slides.length-1, i));
+  slides.forEach((s,k)=>s.classList.toggle('on', k===atual));
+  [...estrobo.children].forEach((b,k)=>{
+    b.classList.toggle('agora', k===atual);
+    b.classList.toggle('passou', k<atual);
+  });
+  contador.textContent = String(atual+1).padStart(2,'0');
+  document.getElementById('palco').scrollTop = 0;
+}
+document.addEventListener('keydown', ev=>{
+  if(ev.key==='ArrowRight'||ev.key==='PageDown'||ev.key===' ') { ir(atual+1); ev.preventDefault(); }
+  if(ev.key==='ArrowLeft'||ev.key==='PageUp') { ir(atual-1); ev.preventDefault(); }
+  if(ev.key==='Home') ir(0);
+  if(ev.key==='End') ir(slides.length-1);
+});
+ir(0);
+
+/* ================= lousa infinita: zoom, pan e traço suavizado ================= */
+const mundo = document.createElement('div');
+mundo.className = 'mundo';
+[...palco.querySelectorAll('.slide')].forEach(s => mundo.appendChild(s));
+palco.appendChild(mundo);
+
+const quadro  = document.createElement('div');    quadro.className  = 'quadro';   palco.appendChild(quadro);
+const tela    = document.createElement('canvas'); tela.className    = 'camada';   tela.id = 'tela'; palco.appendChild(tela);
+const viva    = document.createElement('canvas'); viva.className    = 'camada';   viva.id = 'viva'; palco.appendChild(viva);
+const captura = document.createElement('div');    captura.className = 'captura';  palco.appendChild(captura);
+const cx = tela.getContext('2d'), cv = viva.getContext('2d');
+
+const LARGURA = 1240;
+let k = 1, tx = 0, ty = 0;             // câmera: escala e deslocamento
+const tracos = {};                      // anotações por slide
+let ferramenta = 'off';                 // off | caneta | marca | borracha
+let cor = '#E4572E';
+let atualTraco = null, escrevendo = null, slider = null;
+let ultimaFerramenta = 'caneta';
+const navegando = new Map();
+let pinca = null;
+
+const dpr = () => window.devicePixelRatio || 1;
+const limita = v => Math.min(6, Math.max(0.25, v));
+
+/* ---------- câmera ---------- */
+function aplica(){
+  mundo.style.transform = `translate(${tx}px,${ty}px) scale(${k})`;
+  const z = document.getElementById('zoomlabel');
+  if(z) z.textContent = Math.round(k*100) + '%';
+  redesenha();
+}
+function ajusta(){
+  k = limita(Math.min(1.5, (palco.clientWidth - 16) / LARGURA));
+  tx = (palco.clientWidth - LARGURA * k) / 2;
+  ty = 0;
+  aplica();
+}
+function zoomEm(px, py, f){
+  const novo = limita(k * f), r = novo / k;
+  tx = px - (px - tx) * r;
+  ty = py - (py - ty) * r;
+  k = novo;
+  aplica();
+}
+function zoomCentro(f){ zoomEm(palco.clientWidth/2, palco.clientHeight/2, f); }
+
+function dimensiona(){
+  const d = dpr(), w = palco.clientWidth, h = palco.clientHeight;
+  [tela, viva].forEach(c=>{
+    c.style.width = w + 'px'; c.style.height = h + 'px';
+    c.width = Math.round(w*d); c.height = Math.round(h*d);
+  });
+  redesenha();
+}
+function camera(c){
+  const d = dpr();
+  c.setTransform(d*k, 0, 0, d*k, d*tx, d*ty);
+  c.lineCap = 'round'; c.lineJoin = 'round';
+}
+function paraMundo(ev){
+  const r = palco.getBoundingClientRect();
+  return {
+    x: (ev.clientX - r.left - tx) / k,
+    y: (ev.clientY - r.top  - ty) / k,
+    p: (ev.pointerType === 'pen' && ev.pressure > 0) ? ev.pressure : 0.5
+  };
+}
+
+/* ---------- desenho ---------- */
+function espessura(t, pt){
+  if(t.marca || t.borracha) return t.larg;
+  return t.larg * (0.5 + 0.85 * pt.p);          // pressão da caneta
+}
+function pinta(c, t, sóOFim){
+  const p = t.pts; if(!p.length) return;
+  c.globalCompositeOperation = t.borracha ? 'destination-out' : 'source-over';
+  c.strokeStyle = t.cor; c.fillStyle = t.cor;
+  if(p.length === 1){
+    c.beginPath(); c.arc(p[0].x, p[0].y, espessura(t,p[0])/2, 0, 6.2832); c.fill();
+    c.globalCompositeOperation = 'source-over'; return;
+  }
+  if(p.length === 2){
+    c.beginPath(); c.moveTo(p[0].x,p[0].y); c.lineTo(p[1].x,p[1].y);
+    c.lineWidth = espessura(t,p[1]); c.stroke();
+    c.globalCompositeOperation = 'source-over'; return;
+  }
+  const i0 = sóOFim ? p.length - 1 : 2;
+  for(let i = Math.max(2, i0); i < p.length; i++){
+    const a = p[i-2], b = p[i-1], cc = p[i];
+    const m1 = {x:(a.x+b.x)/2, y:(a.y+b.y)/2};
+    const m2 = {x:(b.x+cc.x)/2, y:(b.y+cc.y)/2};
+    c.beginPath(); c.moveTo(m1.x, m1.y);
+    c.quadraticCurveTo(b.x, b.y, m2.x, m2.y);   // curva suave pelos pontos médios
+    c.lineWidth = espessura(t, b); c.stroke();
+  }
+  c.globalCompositeOperation = 'source-over';
+}
+function redesenha(){
+  cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,tela.width,tela.height);
+  camera(cx);
+  (tracos[atual] || []).forEach(t=>{ cx.globalAlpha = t.alfa; pinta(cx, t, false); });
+  cx.globalAlpha = 1;
+  desenhaViva();
+}
+function desenhaViva(){
+  cv.setTransform(1,0,0,1,0,0); cv.clearRect(0,0,viva.width,viva.height);
+  if(!atualTraco || atualTraco.borracha){ viva.style.opacity = 1; return; }
+  camera(cv); cv.globalAlpha = 1;
+  pinta(cv, atualTraco, false);
+  viva.style.opacity = atualTraco.alfa;          // alfa na camada evita emenda escura no marca-texto
+}
+
+/* ---------- controles dos gráficos, por baixo da camada de captura ---------- */
+function elementoAbaixo(ev){
+  captura.style.pointerEvents = 'none';
+  const el = document.elementFromPoint(ev.clientX, ev.clientY);
+  captura.style.pointerEvents = '';
+  return el;
+}
+function controleAbaixo(ev){
+  const el = elementoAbaixo(ev);
+  if(!el || !el.closest) return null;
+  if(el.matches && el.matches('input[type=range]')) return el;
+  const lab = el.closest('.wctrl label');
+  return lab ? lab.querySelector('input[type=range]') : null;
+}
+function ajustaSlider(inp, ev){
+  const r = inp.getBoundingClientRect();
+  const f = Math.min(1, Math.max(0, (ev.clientX - r.left) / (r.width || 1)));
+  const min = +inp.min, max = +inp.max, passo = +inp.step || 1;
+  const v = Math.round((min + f * (max - min)) / passo) * passo;
+  inp.value = v;
+  inp.dispatchEvent(new Event('input', {bubbles:true}));
+}
+
+/* ================= entrada: caneta escreve, dedo navega =================
+   Regras, iguais às dos apps de anotação:
+   · a caneta nunca aciona botão, alternativa ou controle — ela só escreve
+   · enquanto a caneta está na tela (e por um instante depois), todo toque
+     é descartado: é a rejeição de palma
+   · toque de área grande é palma e nunca conta, mesmo sem caneta na tela
+   · a ponta borracha da Apple Pencil apaga sem trocar de ferramenta
+   ======================================================================= */
+const dist = (a,b) => Math.hypot(a.x-b.x, a.y-b.y);
+
+const CARENCIA = 900;          // ms de bloqueio de toque após a caneta sair
+let ultimaCaneta = 0;
+let canetaNaTela = false;
+const ignorados = new Set();   // ponteiros descartados (palma, toque em carência)
+
+function canetaMandando(){
+  return canetaNaTela || (Date.now() - ultimaCaneta) < CARENCIA;
+}
+function ehPalma(ev){
+  // Safari informa a área de contato; a palma é muito maior que um dedo
+  const w = ev.width || 0, h = ev.height || 0;
+  return ev.pointerType === 'touch' && (w > 45 || h > 45);
+}
+function marcaCaneta(){
+  ultimaCaneta = Date.now();
+  document.body.classList.add('modo-caneta');
+}
+function soltaModoCaneta(){
+  clearTimeout(soltaModoCaneta._t);
+  soltaModoCaneta._t = setTimeout(()=>{
+    if(!canetaNaTela && Date.now() - ultimaCaneta >= CARENCIA) document.body.classList.remove('modo-caneta');
+  }, CARENCIA + 60);
+}
+// descarta qualquer navegação em curso — usado quando a caneta encosta
+function abortaNavegacao(){
+  navegando.clear();
+  pinca = null;
+  slider = null;
+}
+
+captura.addEventListener('pointerdown', ev=>{
+  const caneta = ev.pointerType === 'pen';
+
+  // palma, ou dedo enquanto a caneta manda: descarta por completo
+  if(!caneta && (ehPalma(ev) || canetaMandando())){
+    ignorados.add(ev.pointerId);
+    ev.preventDefault();
+    return;
+  }
+
+  captura.setPointerCapture(ev.pointerId);
+
+  if(caneta){
+    canetaNaTela = true;
+    marcaCaneta();
+    abortaNavegacao();                       // a mão apoiada perde a vez
+    ev.preventDefault();
+
+    // ponta borracha da Pencil: apaga sem trocar de ferramenta
+    const daBorracha = (ev.buttons & 32) === 32;
+    const f = daBorracha ? 'borracha' : (ferramenta === 'off' ? ultimaFerramenta : ferramenta);
+    barra.querySelectorAll('[data-f]').forEach(b =>
+      b.classList.toggle('implicita', ferramenta === 'off' && b.dataset.f === f));
+
+    atualTraco = {
+      cor, alfa: f === 'marca' ? 0.3 : 1,
+      larg: f === 'marca' ? 22 : f === 'borracha' ? 30 : 3.6,
+      marca: f === 'marca', borracha: f === 'borracha', pts:[paraMundo(ev)]
+    };
+    escrevendo = ev.pointerId;
+    barra.classList.add('sumindo');
+    if(atualTraco.borracha){ (tracos[atual] = tracos[atual] || []).push(atualTraco); redesenha(); }
+    else desenhaViva();
+    return;
+  }
+
+  // daqui para baixo é dedo ou mouse
+  const ctrl = controleAbaixo(ev);
+  if(ctrl){ slider = ctrl; ajustaSlider(slider, ev); return; }
+
+  if(ev.pointerType === 'touch' || ferramenta === 'off' || ev.button === 1){
+    navegando.set(ev.pointerId, {x:ev.clientX, y:ev.clientY, x0:ev.clientX, y0:ev.clientY, t:Date.now(), moveu:false});
+    if(navegando.size === 2) pinca = null;
+    return;
+  }
+
+  // mouse com ferramenta ativa: desenha
+  atualTraco = {
+    cor, alfa: ferramenta === 'marca' ? 0.3 : 1,
+    larg: ferramenta === 'marca' ? 22 : ferramenta === 'borracha' ? 30 : 3.6,
+    marca: ferramenta === 'marca', borracha: ferramenta === 'borracha', pts:[paraMundo(ev)]
+  };
+  escrevendo = ev.pointerId;
+  barra.classList.add('sumindo');
+  if(atualTraco.borracha){ (tracos[atual] = tracos[atual] || []).push(atualTraco); redesenha(); }
+  else desenhaViva();
+});
+
+captura.addEventListener('pointermove', ev=>{
+  if(ignorados.has(ev.pointerId)){ ev.preventDefault(); return; }
+
+  // a mão encostou depois da caneta: some da conta
+  if(ev.pointerType !== 'pen' && canetaMandando() && navegando.has(ev.pointerId)){
+    navegando.delete(ev.pointerId); pinca = null; return;
+  }
+
+  if(slider){ ajustaSlider(slider, ev); return; }
+
+  if(navegando.has(ev.pointerId)){
+    const n = navegando.get(ev.pointerId);
+    const dx = ev.clientX - n.x, dy = ev.clientY - n.y;
+    if(Math.hypot(ev.clientX-n.x0, ev.clientY-n.y0) > 6) n.moveu = true;
+    n.x = ev.clientX; n.y = ev.clientY;
+    if(navegando.size === 1){ tx += dx; ty += dy; aplica(); }
+    else if(navegando.size >= 2) pincaAtualiza();
+    return;
+  }
+
+  if(escrevendo !== ev.pointerId || !atualTraco) return;
+  if(ev.pointerType === 'pen') marcaCaneta();
+  ev.preventDefault();
+
+  const amostras = ev.getCoalescedEvents ? ev.getCoalescedEvents() : [ev];
+  let mudou = false;
+  for(const e of amostras){
+    const bruto = paraMundo(e);
+    const ult = atualTraco.pts[atualTraco.pts.length - 1];
+    if(dist(bruto, ult) * k < 1.1) continue;               // descarta tremor
+    const a = 0.45;                                         // suavização exponencial
+    bruto.x = ult.x + (bruto.x - ult.x) * a;
+    bruto.y = ult.y + (bruto.y - ult.y) * a;
+    bruto.p = ult.p + (bruto.p - ult.p) * 0.3;
+    atualTraco.pts.push(bruto);
+    mudou = true;
+  }
+  if(!mudou) return;
+  if(atualTraco.borracha){ camera(cx); cx.globalAlpha = 1; pinta(cx, atualTraco, true); }
+  else desenhaViva();
+});
+
+function encerra(ev){
+  if(ignorados.has(ev.pointerId)){ ignorados.delete(ev.pointerId); return; }
+
+  if(ev.pointerType === 'pen'){
+    canetaNaTela = false;
+    marcaCaneta();
+    soltaModoCaneta();
+  }
+
+  if(slider){ slider = null; return; }
+
+  if(navegando.has(ev.pointerId)){
+    const n = navegando.get(ev.pointerId);
+    navegando.delete(ev.pointerId);
+    pinca = null;
+    // toque curto vira clique — mas nunca durante a carência da caneta
+    if(!n.moveu && Date.now() - n.t < 400 && !canetaMandando()) toqueSimples(ev);
+    return;
+  }
+
+  if(escrevendo === ev.pointerId){
+    escrevendo = null;
+    barra.classList.remove('sumindo');
+    if(atualTraco && !atualTraco.borracha) (tracos[atual] = tracos[atual] || []).push(atualTraco);
+    atualTraco = null;
+    redesenha();
+  }
+}
+['pointerup','pointercancel'].forEach(e => captura.addEventListener(e, encerra));
+
+// a caneta pairando já liga o modo caneta: a palma que encostar antes do traço não conta
+captura.addEventListener('pointerover', ev=>{ if(ev.pointerType === 'pen'){ marcaCaneta(); soltaModoCaneta(); } });
+
+function toqueSimples(ev){                                   // deixa o toque chegar aos botões do slide
+  captura.style.pointerEvents = 'none';
+  const el = document.elementFromPoint(ev.clientX, ev.clientY);
+  captura.style.pointerEvents = '';
+  const b = el && el.closest ? el.closest('button') : null;
+  if(b && !barra.contains(b)) b.click();
+}
+
+function pincaAtualiza(){
+  const [a, b] = [...navegando.values()];
+  if(!a || !b) return;
+  const d = dist(a,b), mx = (a.x+b.x)/2, my = (a.y+b.y)/2;
+  if(!pinca){ pinca = {d, mx, my}; return; }
+  const r = palco.getBoundingClientRect();
+  zoomEm(pinca.mx - r.left, pinca.my - r.top, d / pinca.d);
+  tx += mx - pinca.mx; ty += my - pinca.my;
+  pinca = {d, mx, my};
+  aplica();
+}
+
+palco.addEventListener('wheel', ev=>{
+  ev.preventDefault();
+  const r = palco.getBoundingClientRect();
+  if(ev.ctrlKey || ev.metaKey) zoomEm(ev.clientX - r.left, ev.clientY - r.top, Math.exp(-ev.deltaY * 0.0022));
+  else { tx -= ev.deltaX; ty -= ev.deltaY; aplica(); }
+}, {passive:false});
+
+/* ---------- barra de ferramentas ---------- */
+const barra = document.createElement('div');
+barra.className = 'ferramentas';
+barra.innerHTML = `
+  <button data-a="recolher" title="Recolher a barra">›</button>
+  <hr>
+  <button data-f="caneta" title="Caneta — pressão da Apple Pencil (P)">✎</button>
+  <button data-f="marca" title="Marca-texto (M)">▬</button>
+  <button data-f="borracha" title="Borracha (E)">⌫</button>
+  <hr>
+  <button class="cor" data-cor="#E4572E" title="Laranja"><i style="background:#E4572E"></i></button>
+  <button class="cor" data-cor="#007EA7" title="Azul"><i style="background:#007EA7"></i></button>
+  <button class="cor" data-cor="#12232E" title="Preto"><i style="background:#12232E"></i></button>
+  <button class="cor" data-cor="#F4B942" title="Amarelo"><i style="background:#F4B942"></i></button>
+  <hr>
+  <button data-a="mais" title="Aproximar (+)">+</button>
+  <button data-a="menos" title="Afastar (−)">−</button>
+  <button data-a="ajusta" title="Enquadrar o slide (0)">⤢</button>
+  <hr>
+  <button data-a="desfazer" title="Desfazer (Ctrl+Z)">↺</button>
+  <button data-a="limpar" title="Apagar tudo deste slide">✕</button>
+  <button data-a="quadro" title="Quadro branco (Q)">▢</button>`;
+document.body.appendChild(barra);
+
+const zoomlabel = document.createElement('div');
+zoomlabel.className = 'zoomlabel'; zoomlabel.id = 'zoomlabel'; zoomlabel.textContent = '100%';
+document.body.appendChild(zoomlabel);
+
+/* a caneta escreve; a interface se opera com o dedo ou o mouse */
+function soDedoEMouse(el){
+  let marca = 0;
+  el.addEventListener('pointerdown', ev=>{
+    if(ev.pointerType === 'pen'){ marca = Date.now(); ev.preventDefault(); ev.stopPropagation(); }
+  }, true);
+  el.addEventListener('click', ev=>{
+    if(Date.now() - marca < 700){ ev.preventDefault(); ev.stopPropagation(); }
+  }, true);
+}
+soDedoEMouse(barra);
+soDedoEMouse(estrobo);
+
+function escolhe(f){
+  ferramenta = (ferramenta === f) ? 'off' : f;
+  if(ferramenta !== 'off' && ferramenta !== 'borracha') ultimaFerramenta = ferramenta;
+  captura.classList.toggle('escrevendo', ferramenta !== 'off');
+  estado();
+}
+function estado(){
+  barra.querySelectorAll('[data-f]').forEach(b => b.classList.toggle('on', b.dataset.f === ferramenta));
+  barra.querySelectorAll('[data-cor]').forEach(b => b.classList.toggle('on', b.dataset.cor === cor));
+  barra.querySelector('[data-a="quadro"]').classList.toggle('on', quadro.classList.contains('on'));
+}
+barra.addEventListener('click', ev=>{
+  const b = ev.target.closest('button'); if(!b) return;
+  if(b.dataset.f) escolhe(b.dataset.f);
+  if(b.dataset.cor){
+    cor = b.dataset.cor;
+    if(ferramenta === 'off' || ferramenta === 'borracha') escolhe('caneta'); else estado();
+  }
+  switch(b.dataset.a){
+    case 'mais':     zoomCentro(1.25); break;
+    case 'menos':    zoomCentro(0.8);  break;
+    case 'ajusta':   ajusta(); break;
+    case 'recolher':
+      barra.classList.toggle('recolhida');
+      b.textContent = barra.classList.contains('recolhida') ? '‹' : '›';
+      break;
+    case 'desfazer': (tracos[atual] || []).pop(); redesenha(); break;
+    case 'limpar':   tracos[atual] = []; redesenha(); break;
+    case 'quadro':
+      quadro.classList.toggle('on');
+      if(quadro.classList.contains('on') && ferramenta === 'off') escolhe('caneta'); else estado();
+      break;
+  }
+});
+
+document.addEventListener('keydown', ev=>{
+  if((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'z'){
+    (tracos[atual] || []).pop(); redesenha(); ev.preventDefault(); return;
+  }
+  const t = ev.key.toLowerCase();
+  if(t === 'p') escolhe('caneta');
+  else if(t === 'm') escolhe('marca');
+  else if(t === 'e') escolhe('borracha');
+  else if(t === 'q'){ quadro.classList.toggle('on'); estado(); }
+  else if(t === '0') ajusta();
+  else if(ev.key === '+' || ev.key === '=') zoomCentro(1.25);
+  else if(ev.key === '-') zoomCentro(0.8);
+});
+
+/* ---------- integração com a navegação de slides ---------- */
+const irSlide = ir;
+ir = function(i){
+  irSlide(i);
+  atualTraco = null; escrevendo = null; navegando.clear(); pinca = null;
+  document.querySelectorAll('.slide.on .inter').forEach(el=>el._render && el._render());
+  ajusta();
+};
+
+let redim;
+window.addEventListener('resize', ()=>{ clearTimeout(redim); redim = setTimeout(()=>{
+  document.querySelectorAll('.slide.on .inter').forEach(el=>el._render && el._render());
+  dimensiona(); ajusta();
+}, 120); });
+
+/* Safari: sem zoom de página por gesto, sem menu de contexto, sem seleção */
+['gesturestart','gesturechange','gestureend'].forEach(g =>
+  document.addEventListener(g, e => e.preventDefault(), {passive:false}));
+document.addEventListener('contextmenu', e => {
+  if(e.target.closest && e.target.closest('.palco')) e.preventDefault();
+});
+document.addEventListener('selectstart', e => {
+  if(e.target.closest && e.target.closest('.palco')) e.preventDefault();
+});
+document.addEventListener('dragstart', e => e.preventDefault());
+
+/* aviso discreto na primeira vez que a caneta encosta */
+const aviso = document.createElement('div');
+aviso.className = 'aviso-caneta';
+aviso.textContent = 'caneta escreve · dedo navega e toca nos botões';
+document.body.appendChild(aviso);
+let jaAvisou = false;
+document.addEventListener('pointerdown', ev=>{
+  if(ev.pointerType === 'pen' && !jaAvisou){
+    jaAvisou = true;
+    aviso.classList.add('on');
+    setTimeout(()=>aviso.classList.remove('on'), 2600);
+  }
+}, true);
+
+estado();
+dimensiona();
+ajusta();
+</script>
+</body>
+</html>
