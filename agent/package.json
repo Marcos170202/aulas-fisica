@@ -1,0 +1,13 @@
+{
+  "name": "aulas-fisica-agent",
+  "private": true,
+  "type": "module",
+  "description": "Autonomous content agent: turns source material (PDF/Markdown/text) dropped into conteudo/<slug>/ into a slide deck + exercise notebook for the site.",
+  "scripts": {
+    "generate": "node generate-lesson.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "pdf-parse": "^1.1.1"
+  }
+}

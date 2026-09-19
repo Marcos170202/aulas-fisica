@@ -1,4 +1,4 @@
-window.DEFAULT_LESSON = {
+{
   "title": "Trabalho e Energia — Física para o Enem",
   "subtitle": "Mecânica · Ensino Médio · Enem",
   "slides": [
@@ -95,4 +95,4 @@ window.DEFAULT_LESSON = {
       "html": "\n<div class=\"slide-inner\">\n  <div class=\"chip\">Fim de aula</div>\n  <h2 class=\"title-lg\" style=\"margin-top:10px; font-size:clamp(30px,4vw,46px);\">Trabalho é a moeda que transfere energia</h2>\n  <p class=\"lede\" style=\"margin-top:14px; max-width:620px;\">Domine essas cinco ideias e a maioria das questões de mecânica do Enem vira aplicação direta de fórmula:</p>\n  <div class=\"grid3\" style=\"margin-top:20px; grid-template-columns:repeat(5,1fr); gap:12px;\">\n    <div class=\"card\" style=\"padding:14px; text-align:center;\"><p class=\"formula-sm\" style=\"font-size:13px;\">W=Fd cosθ</p></div>\n    <div class=\"card\" style=\"padding:14px; text-align:center;\"><p class=\"formula-sm\" style=\"font-size:13px;\">P=W/t</p></div>\n    <div class=\"card\" style=\"padding:14px; text-align:center;\"><p class=\"formula-sm\" style=\"font-size:13px;\">Ec=½mv²</p></div>\n    <div class=\"card\" style=\"padding:14px; text-align:center;\"><p class=\"formula-sm\" style=\"font-size:13px;\">Ep=mgh</p></div>\n    <div class=\"card\" style=\"padding:14px; text-align:center;\"><p class=\"formula-sm\" style=\"font-size:13px;\">Em=Ec+Ep</p></div>\n  </div>\n  <footer class=\"credit\" style=\"margin-top:40px;\">Material de apoio · baseado na apostila Trabalho e Energia (Grupo PET-Física) e em questões oficiais do Enem 2015–2024</footer>\n</div>"
     }
   ]
-};
+}

@@ -1,4 +1,4 @@
-window.DEFAULT_NOTEBOOK = {
+{
   "title": "Caderno — Trabalho e Energia",
   "pages": [
     {
@@ -98,4 +98,4 @@ window.DEFAULT_NOTEBOOK = {
       "strokes": []
     }
   ]
-};
+}
