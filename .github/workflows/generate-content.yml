@@ -1,0 +1,103 @@
+name: Gerar aula (agente autônomo)
+
+# Isto é o "agente de IA" pedido: você solta o material-fonte em
+# conteudo/<slug>/ (PDF, .md ou .txt) + um config.json, dá push (ou dispara
+# manualmente aqui), e este workflow chama a API da Anthropic para gerar o
+# slide + caderno e commita o resultado direto no repositório — sem
+# precisar abrir o Claude Code.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "conteudo/**"
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: "Pasta em conteudo/ a (re)gerar (ex.: exemplo-hidrostatica). Vazio = todas."
+        required: false
+      length:
+        description: "Sobrescrever o nível (short/medium/long). Vazio = usa o config.json da pasta."
+        required: false
+        type: choice
+        options: ["", short, medium, long]
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-content-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: agent/package-lock.json
+
+      - name: Install agent dependencies
+        working-directory: agent
+        run: npm install --no-audit --no-fund
+
+      - name: Determine which lessons to (re)generate
+        id: slugs
+        run: |
+          set -euo pipefail
+          if [ -n "${{ github.event.inputs.slug || '' }}" ]; then
+            echo "list=${{ github.event.inputs.slug }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Manual run, no slug given: (re)generate every folder under conteudo/.
+            list=$(find conteudo -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | tr '\n' ' ')
+            echo "list=$list" >> "$GITHUB_OUTPUT"
+          else
+            before="${{ github.event.before }}"
+            if [ -z "$before" ] || [ "$before" = "0000000000000000000000000000000000000000" ]; then
+              list=$(find conteudo -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | tr '\n' ' ')
+            else
+              list=$(git diff --name-only "$before" "${{ github.sha }}" -- conteudo/ \
+                | awk -F/ 'NF>1 {print $2}' | sort -u | tr '\n' ' ')
+            fi
+            echo "list=$list" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate lessons
+        if: steps.slugs.outputs.list != ''
+        working-directory: agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          length_flag=()
+          if [ -n "${{ github.event.inputs.length || '' }}" ]; then
+            length_flag=(--length "${{ github.event.inputs.length }}")
+          fi
+          for slug in ${{ steps.slugs.outputs.list }}; do
+            echo "::group::Gerando $slug"
+            node generate-lesson.mjs "$slug" "${length_flag[@]}"
+            echo "::endgroup::"
+          done
+
+      - name: Commit and push generated lessons
+        if: steps.slugs.outputs.list != ''
+        run: |
+          set -euo pipefail
+          git config user.name "aulas-fisica-agent[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/lessons data/manifest.json
+          if git diff --cached --quiet; then
+            echo "Nada novo para commitar (saída idêntica à já publicada)."
+          else
+            git commit -m "Gerar aula(s): ${{ steps.slugs.outputs.list }}"
+            git push origin HEAD:${{ github.ref_name }}
+          fi

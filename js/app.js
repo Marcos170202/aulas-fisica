@@ -8,6 +8,22 @@
   Slides.init();
   Slides.load(window.DEFAULT_LESSON || { title: "Aula", slides: [] });
   Notebook.init();
+  Library.init();
+
+  // ---------------- theme picker ----------------
+  const THEME_KEY = "te_theme";
+  function applyTheme(theme) {
+    if (theme && theme !== "aurora") document.documentElement.setAttribute("data-theme", theme);
+    else document.documentElement.removeAttribute("data-theme");
+    document.querySelectorAll(".theme-item").forEach((b) => b.classList.toggle("active", b.dataset.theme === (theme || "aurora")));
+    try { localStorage.setItem(THEME_KEY, theme || "aurora"); } catch (e) { /* ignore */ }
+  }
+  applyTheme(document.documentElement.getAttribute("data-theme") || "aurora");
+  document.getElementById("themePickerMenu").addEventListener("click", (e) => {
+    const btn = e.target.closest(".theme-item");
+    if (!btn) return;
+    applyTheme(btn.dataset.theme);
+  });
 
   // ---------------- generic dropdown-menu wiring ----------------
   function wireMenu(btnId, menuId) {
@@ -23,6 +39,8 @@
   }
   wireMenu("lessonExportMenuBtn", "lessonExportMenu");
   wireMenu("nbExportMenuBtn", "nbExportMenu");
+  wireMenu("lessonPickerBtn", "lessonPickerMenu");
+  wireMenu("themePickerBtn", "themePickerMenu");
   document.addEventListener("click", () => document.querySelectorAll(".tb-menu.show").forEach((m) => m.classList.remove("show")));
 
   // ---------------- lesson: load / export JSON ----------------
